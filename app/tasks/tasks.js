@@ -14,8 +14,7 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
 .controller('TasksCtrl', function($scope, $firebaseArray, $q){
         
     var ref = firebase.database().ref().child('Tasks');
-    $scope.data = $firebaseArray(ref);  
-    console.log($scope.data);
+    $scope.data = $firebaseArray(ref);
 });
 
 

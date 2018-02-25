@@ -1,0 +1,14 @@
+<div ng-repeat="project in data">
+    <h2>{{project.Name}}</h2>
+    <p>{{project.Description}}</p>
+    <p>Department: {{project.Department.Name}}</p>
+    <p>{{project.CreationDate}} - {{project.CompletionDate}}</p>
+    <p><b>Employees: </b></p>
+    <div ng-repeat="employee in project.Employees">
+        <span>{{employee.Name}}</span>
+    </div>
+    <p><b>Tasks: </b></p>
+    <div ng-repeat="task in project.Tasks">
+        <span>{{task.Name}}</span>
+    </div>
+</div>
