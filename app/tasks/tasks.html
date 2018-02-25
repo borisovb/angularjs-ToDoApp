@@ -1,0 +1,9 @@
+
+<div ng-repeat="task in data">
+    <h3>{{task.Title}}</h3>
+    <p>{{task.Description}}</p>
+    <p>Importance: {{task.Importance}}</p>
+    <p>{{task.CreationDate}} - {{task.CompletionDate}}</p>
+    <p>Project: {{task.Project.Name}}</p>
+    <p>Employee: {{task.Employee.Name}}</p>
+</div>
