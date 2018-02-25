@@ -1,0 +1,25 @@
+<div class="table-responsive">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Employees</th>
+          <th>Projects</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="department in data">
+          <td>{{department.Name}}</td>
+          <td>Employees</td>
+          <td>Projects</td>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Name</th>
+          <th>Employees</th>
+          <th>Projects</th>
+        </tr>
+      </tfoot>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
