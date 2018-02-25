@@ -1,9 +1,60 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="#">Dashboard</a>
+  </li>
 
-<div ng-repeat="task in data">
-    <h3>{{task.Title}}</h3>
-    <p>{{task.Description}}</p>
-    <p>Importance: {{task.Importance}}</p>
-    <p>{{task.CreationDate}} - {{task.CompletionDate}}</p>
-    <p>Project: {{task.Project.Name}}</p>
-    <p>Employee: {{task.Employee.Name}}</p>
+  <li class="breadcrumb-item active">Tasks</li>
+</ol>
+
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>
+    Tasks
+  </div>
+
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Title</th>
+
+            <th>Description</th>
+
+            <th>Creation Date</th>
+
+            <th>Completion Date</th>
+
+            <th>Project</th>
+
+            <th>Employee</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-repeat="task in data">
+            <td>{{task.Title}}</td>
+
+            <td>{{task.Description}}</td>
+
+            <td>
+              Importance: {{task.Importance}}
+            </td>
+
+            <td>
+              {{task.CreationDate}} - {{task.CompletionDate}}
+            </td>
+
+            <td>
+              Project: {{task.Project.Name}}
+            </td>
+
+            <td>
+              Employee: {{task.Employee.Name}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

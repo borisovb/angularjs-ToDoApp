@@ -1,14 +1,37 @@
-<div ng-repeat="project in data">
-    <h2>{{project.Name}}</h2>
-    <p>{{project.Description}}</p>
-    <p>Department: {{project.Department.Name}}</p>
-    <p>{{project.CreationDate}} - {{project.CompletionDate}}</p>
-    <p><b>Employees: </b></p>
-    <div ng-repeat="employee in project.Employees">
-        <span>{{employee.Name}}</span>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="#">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item active">Projects</li>
+</ol>
+<div class="card mb-3">
+  <div class="card-header">
+    <i class="fa fa-table"></i>Projects</div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Department</th>
+            <th>Employees</th>
+            <th>Tasks</th>
+            <th>Start Date</th>
+            <th>Completion date</th>
+          </tr>
+        </thead>
+        <tbody ng-repeat="project in data">
+          <td>{{project.Name}}</td>
+          <td>{{project.Description}}</td>
+          <td>{{project.Department.Name}}</td>
+          <td>Employees</td>
+          <td>Tasks</td>
+          <td>{{project.CreationDate}} </td>
+          <td>{{project.CompletionDate}}</td>
+        </tbody>
+      </table>
     </div>
-    <p><b>Tasks: </b></p>
-    <div ng-repeat="task in project.Tasks">
-        <span>{{task.Name}}</span>
-    </div>
+  </div>
+</div>
 </div>
