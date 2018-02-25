@@ -7,6 +7,8 @@ angular.module('myApp', [
   'myApp.projects',
   'myApp.departments',
   'firebase',
+  'myApp.employees',
+  'firebase'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
