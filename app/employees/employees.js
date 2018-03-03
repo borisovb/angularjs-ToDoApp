@@ -11,8 +11,11 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
 }])
 
 .controller('EmployeesCtrl', function($scope, $firebaseArray){
-    var ref = firebase.database().ref().child('Employees');
-    $scope.employees = $firebaseArray(ref);
+    var refEmp = firebase.database().ref().child('Employees');
+    $scope.employees = $firebaseArray(refEmp);
+
+    var refDep = firebase.database().ref().child('Departments');
+    $scope.departments = $firebaseArray(refDep);
 });
 
 
