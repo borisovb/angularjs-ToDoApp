@@ -6,10 +6,12 @@
 </ol>
 
 <div class="card mb-3">
-    <div class="card-header">
-        <i class="fa fa-table"></i> Departments 
-      </div>
-      <div class="card-body">
+  <div class="card-header">
+    <i class="fa fa-table"></i> Departments 
+    <button type="button" class="btn btn-success" style="float: right" ng-click="show=true">Add</button>
+  </div>
+
+  <div class="card-body">
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -19,10 +21,28 @@
             <th>Projects</th>
           </tr>
         </thead>
-        <tbody ng-repeat="department in data">
-            <td>{{department.Name}}</td>
-            <td>Employees</td>
-            <td>Projects</td>
+        <tbody>
+          <tr ng-show="show">
+            <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+            <td><a href="#!/employees">Add...</a></td>
+            <td><a href="#!/projects">Add...</a></td>
+
+            <td class="d-flex justify-content-around aling-stretch" style="border: none">
+
+              <button class="btn"><i class="fas fa-plus-square text-success"></i></button>
+              <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
+            </td>
+            
+          </tr>
+          <tr ng-repeat="department in data">
+              <td>{{department.Name}}</td>
+              <td>Employees</td>
+              <td>Projects</td>
+              <td class="d-flex justify-content-around aling-stretch" style="border: none">
+                <i class="far fa-edit text-primary"></i>
+                <i class="far fa-trash-alt text-danger"></i>
+              </td>
+            </tr>
         </tbody>
       </table>
     </div>
