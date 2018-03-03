@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="heading">Update task</div>
+    <div class="flex flex-row inner-container">
+        <div class="col-4">
+            <div class="cell">Title</div>
+            <div class="cell">Description</div>
+            <div class="cell">Importance</div>
+            <div class="cell">Creation Date</div>
+            <div class="cell">Completion Date</div>
+            <div class="cell">Project</div>
+            <div class="cell">Employee</div>
+        </div>
+        <div class="col-4">
+            <div class="cell">{{data.Title}}</div>
+            <div class="cell">{{data.Description}}</div>
+            <div class="cell">{{data.Importance}}</div>
+            <div class="cell">{{data.CreationDate}}</div>
+            <div class="cell">{{data.CompletionDate}}</div>
+            <div class="cell">{{data.Project.Name}}</div>
+            <div class="cell">{{data.Employee.Name}}</div>
+        </div>
+        <div class="col-4 right-justify">
+            <input class="cell form-control" ng-model="data.Title" type="text">
+            <input class="cell form-control" ng-model="data.Description" type="text">
+            <input class="cell form-control" ng-model="data.Importance" type="text">
+            <input class="cell form-control" ng-model="data.CreationDate" type="text">
+            <input class="cell form-control" ng-model="data.CompletionDate" type="text">
+            <input class="cell form-control" ng-model="data.Project.Name" type="text">
+            <input class="cell form-control" ng-model="data.Employee.Name" type="text">
+        </div>
+    </div>
+</div>

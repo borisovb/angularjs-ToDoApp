@@ -10,6 +10,9 @@
   <div class="card-header">
     <i class="fa fa-table"></i>
     Tasks
+    <div class="add-item">
+      <button>Add Task</button>
+    </div>
   </div>
 
   <div class="card-body">
@@ -20,6 +23,8 @@
             <th>Title</th>
 
             <th>Description</th>
+
+            <th>Importance</th>
 
             <th>Creation Date</th>
 
@@ -38,11 +43,15 @@
             <td>{{task.Description}}</td>
 
             <td>
-              Importance: {{task.Importance}}
+              {{task.Importance}}
             </td>
 
             <td>
-              {{task.CreationDate}} - {{task.CompletionDate}}
+              {{task.CreationDate}}
+            </td>
+
+            <td>
+              {{task.CompletionDate}}
             </td>
 
             <td>
