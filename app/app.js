@@ -6,7 +6,6 @@ angular.module('myApp', [
   'myApp.tasks',
   'myApp.projects',
   'myApp.departments',
-  'firebase',
   'myApp.employees',
   'firebase'
 ]).
