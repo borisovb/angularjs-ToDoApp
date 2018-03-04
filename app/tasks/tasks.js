@@ -30,11 +30,8 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
     $scope.employees = empList;
 
     $scope.AddRecord = function(){
-        var projIndex = projectsList.$indexFor($scope.record.Project.ID);
-        var empIndex = empList.$indexFor($scope.record.Employee.ID);
-
-        var proj = $scope.projects[projIndex];
-        var emp = $scope.employees[empIndex];
+        var proj = projectsList.$getRecord($scope.record.Project.ID);
+        var emp = empList.$getRecord($scope.record.Employee.ID);
 
         $scope.record.Project.Name = proj.Name;
         $scope.record.Employee.Name = emp.FirstName;
@@ -100,17 +97,77 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
     var ref = firebase.database().ref().child('Tasks');
     var list = $firebaseArray(ref);
     var rec;
+
     list.$loaded().then(function(x){ 
         $scope.task = x.$getRecord(id);
         rec = $scope.task;
         
     });
 
+    var refProj = firebase.database().ref().child('Projects');
+    var projectsList = $firebaseArray(refProj);
+    $scope.projects = projectsList;
+    
+    var refEmp = firebase.database().ref().child('Employees');
+    var empList = $firebaseArray(refEmp);
+    $scope.employees = empList;
+
     $scope.UpdateRecord = function(){
+        
+        //delete task from employee and project and save them 
+        var proj = projectsList.$getRecord($scope.task.Project.ID);
+        var emp = empList.$getRecord($scope.task.Employee.ID);
+
+        var projectTaskIndex = findIndex(proj.Tasks, rec.$Id);
+        if(projectTaskIndex >= 0){ 
+            proj.Tasks.splice(projectTaskIndex, 1);
+
+            if(proj.Tasks == []){
+                proj.Tasks.push({ "Fake" : true });
+            }
+
+            projectsList.$save(proj);
+        }
+
+        var empTaskIndex = findIndex(emp.Tasks, rec.$id)
+        if(empTaskIndex >= 0){
+            emp.Tasks.splice(empTaskIndex, 1);
+            
+            if(emp.Tasks.length == 0){
+                emp.Tasks.push({ "Fake" : true });
+            }
+            empList.$save(emp);
+        }
+
+        //new data
+        proj = projectsList.$getRecord($scope.update.task.Project.ID);
+        emp = empList.$getRecord($scope.update.task.Employee.ID);
+
+        //update task
+        rec.Employee = { "ID" : emp.$id, "Name" : emp.FirstName };
+        rec.Project = { "ID" : proj.$id, "Name" : proj.Name };
+        
+        //add task to employee and project
+        proj.Tasks.push({"ID": rec.$id, "Name" : rec.Title});
+        emp.Tasks.push({"ID": rec.$id, "Name" : rec.Title});
+
+        projectsList.$save(proj);
+        empList.$save(emp);
+
+        //save
         list.$save(rec).then(function(){
             $route.reload()
         });
 
-        //TODO : UPDATE OTHER ENTITIES
+        function findIndex(array, id){
+            for (const key in array) {
+                if (array.hasOwnProperty(key)) {
+                    if(array[key].ID == id){
+                        return key;
+                    }
+                }
+            }
+            return -1;
+        }
     };
 });

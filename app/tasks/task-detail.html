@@ -27,8 +27,13 @@
             <input class="cell form-control" ng-model="task.Importance" type="text">
             <input class="cell form-control" ng-model="task.CreationDate" type="text">
             <input class="cell form-control" ng-model="task.CompletionDate" type="text">
-            <input class="cell form-control" ng-model="task.Project.Name" type="text">
-            <input class="cell form-control" ng-model="task.Employee.Name" type="text">
+
+            <select class="cell form-control" ng-model="update.task.Project.ID" >
+                <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>
+            </select>
+            <select class="cell form-control" ng-model="update.task.Employee.ID" >
+                <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.FirstName}} {{employee.LastName}}</option>
+            </select>
         </div>
     </div>
     <div class="center">
