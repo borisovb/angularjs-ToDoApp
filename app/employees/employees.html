@@ -8,7 +8,7 @@
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-table"></i> Employees 
-          <button type="button" class="btn btn-success" style="float: right" ng-click="show=true">Add</button>
+          <a href="#!/employees/add"><button type="button" class="btn btn-success" style="float: right">Add</button></a>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -26,25 +26,6 @@
                 </tr>
               </thead>
               <tbody>
-                  <tr ng-show="show">
-                      <td> <input type="text" class="form-control"  placeholder="First Name" /> </td>
-                      <td> <input type="text" class="form-control"  placeholder="Last Name" /> </td>
-                      <td> <input type="date" class="form-control"  placeholder="Date of Birth" /> </td>
-                      <td> <input type="date" class="form-control"  placeholder="Hire Date" /> </td>
-                      <td> <input type="text" class="form-control"  placeholder="Job Title" /> </td>
-                      <td> 
-                            <select class="form-control" >
-                              <option ng-repeat="department in departments" value="{{ department.Name }}"> {{ department.Name }}</option>
-                            </select>
-                      </td>
-                      <td><a href="#!/projects">Add...</a></td>
-                      <td><a href="#!/tasks">Add...</a></td>
-                      <td class="d-flex justify-content-around aling-stretch" style="border: none">
-                          <button class="btn"><i class="fas fa-plus-square text-success"></i></button>
-                          <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
-                        </td>
-                    </tr>
-
                   <tr ng-repeat="employee in employees">
                     <td> {{ employee.FirstName }} </td>
                     <td> {{ employee.LastName }} </td>
@@ -55,10 +36,9 @@
                     <td> <a href="#!/employee/{{employee.$id}}"> Show Details...</a> </td>
                     <td> <a href="#!/employee/{{employee.$id}}"> Show Details...</a> </td>
                     
-
                     <td class="d-flex justify-content-around aling-stretch" style="border: none">
-                        <i class="far fa-edit text-primary"></i>
-                        <i class="far fa-trash-alt text-danger"></i>
+                        <a href="#!/employees/edit/{{employee.$id}}"><i class="far fa-edit text-primary"></i></a>
+                        <button class="button-favicon" ng-click="DeleteRecord(employee.$id)"><i class="far fa-trash-alt text-danger"></i></button>
                     </td>
                   </tr>
               </tbody>
