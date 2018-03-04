@@ -23,3 +23,97 @@
   content: "|";
   padding-right: 0.3em;
 }
+
+.button-favicon {
+  border: 0px;
+  background-color: transparent; 
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+
+/* FLEX */
+
+.col-1 {
+  flex: 1;
+}
+
+.col-2 {
+  flex: 2;
+}
+
+.col-3 {
+  flex: 3;
+}
+
+.col-4 {
+  flex: 4;
+}
+
+.col-5 {
+  flex: 5;
+}
+
+.col-6 {
+  flex: 6;
+}
+
+.col-7 {
+  flex: 7;
+}
+
+.col-8 {
+  flex: 8;
+}
+
+.col-9 {
+  flex: 9;
+}
+
+.col-10 {
+  flex: 10;
+}
+
+.col-11 {
+  flex: 11;
+}
+
+.col-12 {
+  flex: 12;
+}
+
+.gutter-1 {
+  flex: 1;
+}
+
+.cell {
+  padding: 7px;
+  margin: 3px;
+  color: #343a40;
+}
+
+.content-holder{
+  background-color: #e3dede;
+  border: 1px solid #a3a1a1;
+  border-radius: 5px;
+}   
+
+.heading {
+  color: #343a40;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.center {
+  text-align: center;
+  margin-top: 20px;
+}
