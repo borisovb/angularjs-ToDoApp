@@ -28,6 +28,16 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
     var refEmp = firebase.database().ref().child('Employees');
     $scope.employees = $firebaseArray(refEmp);
 
+    $scope.AddRecord = function(){
+        var projIndex = $scope.projects.$indexFor($scope.record.Project.$id);
+        var empIndex = $scope.employees.$indexFor($scope.record.Employee.$id);
+
+
+        $scope.record.Project.Name = $scope.projects[projIndex].Name;
+        $scope.record.Employee.Name = $scope.employees[empIndex].FirstName;
+        list.$add($scope.record);
+    }
+
     $scope.DeleteRecord = function(key){
         var index = list.$indexFor(key);
         console.log(index);
