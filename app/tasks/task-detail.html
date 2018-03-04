@@ -11,13 +11,13 @@
             <div class="cell">Employee</div>
         </div>
         <div class="col-4">
-            <div class="cell">{{data.Title}}</div>
-            <div class="cell">{{data.Description}}</div>
-            <div class="cell">{{data.Importance}}</div>
-            <div class="cell">{{data.CreationDate}}</div>
-            <div class="cell">{{data.CompletionDate}}</div>
-            <div class="cell">{{data.Project.Name}}</div>
-            <div class="cell">{{data.Employee.Name}}</div>
+            <div class="cell">{{::data.Title}}</div>
+            <div class="cell">{{::data.Description}}</div>
+            <div class="cell">{{::data.Importance}}</div>
+            <div class="cell">{{::data.CreationDate}}</div>
+            <div class="cell">{{::data.CompletionDate}}</div>
+            <div class="cell">{{::data.Project.Name}}</div>
+            <div class="cell">{{::data.Employee.Name}}</div>
         </div>
         <div class="col-4 right-justify">
             <input class="cell form-control" ng-model="data.Title" type="text">
@@ -28,5 +28,9 @@
             <input class="cell form-control" ng-model="data.Project.Name" type="text">
             <input class="cell form-control" ng-model="data.Employee.Name" type="text">
         </div>
+    </div>
+
+    <div class="center-spaced">
+        <button ng-click="UpdateRecord()" class="btn btn-info">Update</button>
     </div>
 </div>

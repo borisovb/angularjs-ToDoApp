@@ -31,10 +31,33 @@
             <th>Project</th>
 
             <th>Employee</th>
-          </tr>
         </thead>
 
         <tbody>
+            <tr ng-show="show">
+                <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+                <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+                <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+                <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+                <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+                <td> 
+                    <select class="form-control" >
+                      <option ng-repeat="project in projects" value="{{project.ID}}">{{ project.Name }}</option>
+                    </select>
+                </td>
+                <td> 
+                    <select class="form-control" >
+                      <option ng-repeat="employee in employees" value="{{employee.ID}}">{{employee.FirstName}} {{employee.LastName}}</option>
+                    </select>
+                </td>
+      
+                <td class="d-flex justify-content-around aling-stretch" style="border: none">
+    
+                  <button class="btn"><i class="fas fa-plus-square text-success"></i></button>
+                  <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
+                </td>
+                
+              </tr>
           <tr ng-repeat="task in data">
             <td>{{task.Title}}</td>
 
@@ -53,12 +76,16 @@
             </td>
 
             <td>
-              Project: {{task.Project.Name}}
+              {{task.Project.Name}}
             </td>
 
             <td>
-              Employee: {{task.Employee.Name}}
+              {{task.Employee.Name}}
             </td>
+            <td class="d-flex justify-content-around aling-stretch" style="border: none">
+                <a href="#!/task/{{task.ID}}"><i class="far fa-edit text-primary"></i></a>
+                <button class="button-favicon" ng-click="DeleteRecord(task.ID)"><i class="far fa-trash-alt text-danger"></i></button>
+              </td>
           </tr>
         </tbody>
       </table>

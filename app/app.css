@@ -99,6 +99,11 @@
   color: #343a40;
 }
 
+.center-spaced {
+  text-align: center;
+  margin: 10px;
+}
+
 .inner-container{
     padding: 5px 0px;
     background-color: #e3dede;
@@ -116,4 +121,9 @@
 
 .right-justify{
   align-items: space-around;
+}
+
+.button-favicon {
+  border: 0px;
+  background-color: transparent;
 }
