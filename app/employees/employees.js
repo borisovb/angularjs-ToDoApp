@@ -7,6 +7,10 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
         templateUrl: 'employees/employees.html',
         controller: 'EmployeesCtrl'
     });
+    $routeProvider.when('/employee/:id',{
+        templateUrl: 'employees/employee-detail.html',
+        controller: 'EmployeeDetailsCtrl'
+    });
 
 }])
 
@@ -16,15 +20,16 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
 
     var refDep = firebase.database().ref().child('Departments');
     $scope.departments = $firebaseArray(refDep);
+})
 
-    $scope.getProjects = function(empNo){
-        var refEmp = firebase.database().ref().child('Employees');
-        var list = $firebaseArray(refDep);
-        list.$loaded().then(function(x){ 
-            $scope.projects = x.$getRecord(empNo);
-            return projectsList = $scope.projects;
+.controller('EmployeeDetailsCtrl', function($scope, $firebaseArray, $routeParams, $route){
+    var empId = $routeParams.id;
+    var ref = firebase.database().ref().child('Employees');
+    var empList = $firebaseArray(ref);
+    empList.$loaded().then(function(x){ 
+        $scope.employee = x.$getRecord(empId);
+        console.log($scope.employee);
         });
-    };
 });
 
 
