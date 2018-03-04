@@ -41,13 +41,13 @@
                 <td><input type="text" ng-model="record.CreationDate" class="form-control" placeholder="DD.MM.YYYY" ng-required="required"></td>
                 <td><input type="text" ng-model="record.CompletionDate" class="form-control" placeholder="DD.MM.YYYY" ng-required="required"></td>
                 <td> 
-                    <select class="form-control" ng-model="record.Project.$id" >
+                    <select class="form-control" ng-model="record.Project.ID" >
                       <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>
                     </select>
                 </td>
                 
                 <td> 
-                    <select class="form-control" ng-model="record.Employee.$id" >
+                    <select class="form-control" ng-model="record.Employee.ID" >
                       <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.FirstName}} {{employee.LastName}}</option>
                     </select>
                 </td>
