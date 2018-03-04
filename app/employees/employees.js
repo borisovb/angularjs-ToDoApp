@@ -16,6 +16,15 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
 
     var refDep = firebase.database().ref().child('Departments');
     $scope.departments = $firebaseArray(refDep);
+
+    $scope.getProjects = function(empNo){
+        var refEmp = firebase.database().ref().child('Employees');
+        var list = $firebaseArray(refDep);
+        list.$loaded().then(function(x){ 
+            $scope.projects = x.$getRecord(empNo);
+            return projectsList = $scope.projects;
+        });
+    };
 });
 
 
