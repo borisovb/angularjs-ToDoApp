@@ -1,0 +1,30 @@
+<div class="container">
+        <div class="heading">Employee Details</div>
+        <div class="flex flex-row content-holder">
+            <div class="col-3">
+                <div class="cell">First Name</div>
+                <div class="cell">Last Name</div>
+                <div class="cell">Date of Birth</div>
+                <div class="cell">Hire Date</div>
+                <div class="cell">Job</div>
+                <div class="cell">Department</div>
+                <div class="cell">Projects</div>
+                <div class="cell">Tasks</div>
+            </div>
+    
+            <div class="col-4">
+                <div class="cell">{{ employee.FirstName }}</div>
+                <div class="cell">{{ employee.LastName }}</div>    
+                <div class="cell">{{ employee.DateOfBirth }}</div>    
+                <div class="cell">{{ employee.HireDate }}</div>    
+                <div class="cell">{{ employee.JobTitle }}</div>    
+                <div class="cell">{{ employee.Department }}</div>    
+                <div class="cell">
+                    <div ng-repeat="project in employee.Projects"> {{ project.Name }}</div>
+                </div>
+                <div class="cell">
+                    <div ng-repeat="task in employee.Tasks"> {{ task.Name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
