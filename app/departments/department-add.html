@@ -1,0 +1,19 @@
+<div class="container-fluid" ng-controller="AddDepartmentCtrl">
+    <h3>New Department</h3>
+    <div>
+        <form>
+            <input type="text" class="form-control" placeholder="Name..." ng-model="record.Name" ng-required="required">
+            <div class="list-group checked-list-box container">
+                    <label class="list-group-item" ng-repeat="employee in employees">
+                        <input type="checkbox" checklist-model="record.Employees" checklist-value="employee.$id">
+                        {{employee.FirstName + " " + employee.LastName}}</label>
+                    </div>
+            <div class="list-group checked-list-box container">
+                <label class="list-group-item" ng-repeat="project in projects">
+                        <input type="checkbox" checklist-model="record.Projects " checklist-value="project.$id">{{project.Name}}
+                </label>
+            </div>
+            <button class="btn btn-success" type="submit" ng-click="add(record)">Add</button>
+        </form>
+    </div>
+</div>
