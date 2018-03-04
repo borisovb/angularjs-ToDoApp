@@ -18,12 +18,14 @@
                 <div class="cell">{{ employee.DateOfBirth }}</div>    
                 <div class="cell">{{ employee.HireDate }}</div>    
                 <div class="cell">{{ employee.JobTitle }}</div>    
-                <div class="cell">{{ employee.Department }}</div>    
+                <div class="cell">
+                    <div> {{ employee.Department.Name }}</div>
+                </div>    
                 <div class="cell">
                     <div ng-repeat="project in employee.Projects"> {{ project.Name }}</div>
                 </div>
                 <div class="cell">
-                    <div ng-repeat="task in employee.Tasks"> {{ task.Name }}</div>
+                    <div ng-repeat="task in employee.Tasks"> {{ task.Title }}</div>
                 </div>
             </div>
         </div>
