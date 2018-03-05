@@ -15,7 +15,7 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
 
 }])
 
-.controller('TasksCtrl', function($scope, $firebaseArray){
+.controller('TasksCtrl', function($scope, $firebaseArray, holderManipulation){
         
     var ref = firebase.database().ref().child('Tasks');
     var taskList = $firebaseArray(ref);
@@ -38,11 +38,10 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
 
         taskList.$add($scope.record)
         .then(function(newRec){
-            proj.Tasks.push({"ID": newRec.key, "Name" : $scope.record.Title});
-            emp.Tasks.push({"ID": newRec.key, "Name" : $scope.record.Title});
+            var shortTask = {"ID": newRec.key, "Name" : $scope.record.Title};
 
-            projectsList.$save(proj);
-            empList.$save(emp);
+            holderManipulation.AddTaskToHolder(shortTask, proj, projectsList);
+            holderManipulation.AddTaskToHolder(shortTask, emp, empList);
         });
     }
 
@@ -57,42 +56,12 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
         var taskIndex = taskList.$indexFor(recId);
         taskList.$remove(taskIndex);
 
-        var projectTaskIndex = findIndex(proj.Tasks, recId);
-        if(projectTaskIndex >= 0){ 
-            proj.Tasks.splice(projectTaskIndex, 1);
-
-            if(proj.Tasks == []){
-                proj.Tasks.push({ "Fake" : true });
-            }
-
-            projectsList.$save(proj);
-        }
-
-        var empTaskIndex = findIndex(emp.Tasks, recId)
-        if(empTaskIndex >= 0){
-            emp.Tasks.splice(empTaskIndex, 1);
-            
-            if(emp.Tasks == []){
-                emp.Tasks.push({ "Fake" : true });
-            }
-
-            empList.$save(emp);
-        }
-
-        function findIndex(array, id){
-            for (const key in array) {
-                if (array.hasOwnProperty(key)) {
-                    if(array[key].ID == id){
-                        return key;
-                    }
-                }
-            }
-            return -1;
-        }
+        holderManipulation.RemoveTaskFromHolder(recId, proj, projectsList);
+        holderManipulation.RemoveTaskFromHolder(recId, emp, empList);
     }
 })
 
-.controller('TaskDetailsCtrl', function($scope, $firebaseArray, $routeParams, $route){
+.controller('TaskDetailsCtrl', function($scope, $firebaseArray, $routeParams, $route, holderManipulation){
     var id = $routeParams.id;
     var ref = firebase.database().ref().child('Tasks');
     var list = $firebaseArray(ref);
@@ -118,26 +87,8 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
         var proj = projectsList.$getRecord($scope.task.Project.ID);
         var emp = empList.$getRecord($scope.task.Employee.ID);
 
-        var projectTaskIndex = findIndex(proj.Tasks, rec.$Id);
-        if(projectTaskIndex >= 0){ 
-            proj.Tasks.splice(projectTaskIndex, 1);
-
-            if(proj.Tasks == []){
-                proj.Tasks.push({ "Fake" : true });
-            }
-
-            projectsList.$save(proj);
-        }
-
-        var empTaskIndex = findIndex(emp.Tasks, rec.$id)
-        if(empTaskIndex >= 0){
-            emp.Tasks.splice(empTaskIndex, 1);
-            
-            if(emp.Tasks.length == 0){
-                emp.Tasks.push({ "Fake" : true });
-            }
-            empList.$save(emp);
-        }
+        holderManipulation.RemoveTaskFromHolder(rec.$id, proj, projectsList);
+        holderManipulation.RemoveTaskFromHolder(rec.$id, emp, empList);
 
         //new data
         proj = projectsList.$getRecord($scope.update.task.Project.ID);
@@ -148,26 +99,13 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
         rec.Project = { "ID" : proj.$id, "Name" : proj.Name };
         
         //add task to employee and project
-        proj.Tasks.push({"ID": rec.$id, "Name" : rec.Title});
-        emp.Tasks.push({"ID": rec.$id, "Name" : rec.Title});
-
-        projectsList.$save(proj);
-        empList.$save(emp);
+        var shortTask = {"ID": rec.$id, "Name" : rec.Title};
+        holderManipulation.AddTaskToHolder(shortTask, proj, projectsList);
+        holderManipulation.AddTaskToHolder(shortTask, emp, empList);
 
         //save
         list.$save(rec).then(function(){
             $route.reload()
         });
-
-        function findIndex(array, id){
-            for (const key in array) {
-                if (array.hasOwnProperty(key)) {
-                    if(array[key].ID == id){
-                        return key;
-                    }
-                }
-            }
-            return -1;
-        }
     };
 });
