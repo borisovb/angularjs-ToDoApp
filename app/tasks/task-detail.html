@@ -1,7 +1,7 @@
 <div class="container">
     <div class="heading">Update task</div>
-    <div class="flex flex-row inner-container">
-        <div class="col-4">
+    <div class="flex flex-row content-holder">
+        <div class="col-3">
             <div class="cell">Title</div>
             <div class="cell">Description</div>
             <div class="cell">Importance</div>
@@ -10,27 +10,33 @@
             <div class="cell">Project</div>
             <div class="cell">Employee</div>
         </div>
+
         <div class="col-4">
-            <div class="cell">{{::data.Title}}</div>
-            <div class="cell">{{::data.Description}}</div>
-            <div class="cell">{{::data.Importance}}</div>
-            <div class="cell">{{::data.CreationDate}}</div>
-            <div class="cell">{{::data.CompletionDate}}</div>
-            <div class="cell">{{::data.Project.Name}}</div>
-            <div class="cell">{{::data.Employee.Name}}</div>
+            <div class="cell">{{::task.Title}}</div>
+            <div class="cell">{{::task.Description}}</div>    
+            <div class="cell">{{::task.Importance}}</div>    
+            <div class="cell">{{::task.CreationDate}}</div>    
+            <div class="cell">{{::task.CompletionDate}}</div>    
+            <div class="cell">{{::task.Project.Name}}</div>    
+            <div class="cell">{{::task.Employee.Name}}</div>
         </div>
-        <div class="col-4 right-justify">
-            <input class="cell form-control" ng-model="data.Title" type="text">
-            <input class="cell form-control" ng-model="data.Description" type="text">
-            <input class="cell form-control" ng-model="data.Importance" type="text">
-            <input class="cell form-control" ng-model="data.CreationDate" type="text">
-            <input class="cell form-control" ng-model="data.CompletionDate" type="text">
-            <input class="cell form-control" ng-model="data.Project.Name" type="text">
-            <input class="cell form-control" ng-model="data.Employee.Name" type="text">
+
+        <div class="right-poss col-4">
+            <input class="cell form-control" ng-model="task.Title" type="text">
+            <input class="cell form-control" ng-model="task.Description" type="text">
+            <input class="cell form-control" ng-model="task.Importance" type="text">
+            <input class="cell form-control" ng-model="task.CreationDate" type="text">
+            <input class="cell form-control" ng-model="task.CompletionDate" type="text">
+
+            <select class="cell form-control" ng-model="update.task.Project.ID" >
+                <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>
+            </select>
+            <select class="cell form-control" ng-model="update.task.Employee.ID" >
+                <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.FirstName}} {{employee.LastName}}</option>
+            </select>
         </div>
     </div>
-
-    <div class="center-spaced">
+    <div class="center">
         <button ng-click="UpdateRecord()" class="btn btn-info">Update</button>
     </div>
 </div>
