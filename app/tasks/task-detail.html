@@ -28,7 +28,7 @@
             <input class="cell form-control" ng-model="task.CreationDate" type="text">
             <input class="cell form-control" ng-model="task.CompletionDate" type="text">
             <select class="cell form-control" ng-options="project.Name for project in projects track by project.$id" ng-model="SelectedProject" ></select>
-            <select class="cell form-control" ng-options="(employee.FirstName + employee.LastName) for employee in employees track by employee.$id" ng-model="SelectedEmployee"></select>
+            <select class="cell form-control" ng-options="employee.Name for employee in employees track by employee.$id" ng-model="SelectedEmployee"></select>
         </div>
     </div>
     <div class="center">

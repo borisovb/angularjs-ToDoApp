@@ -34,7 +34,7 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
         var emp = empList.$getRecord($scope.record.Employee.ID);
 
         $scope.record.Project.Name = proj.Name;
-        $scope.record.Employee.Name = emp.FirstName;
+        $scope.record.Employee.Name = emp.Name;
 
         taskList.$add($scope.record)
         .then(function(newRec){
@@ -66,8 +66,6 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
     var ref = firebase.database().ref().child('Tasks');
     var list = $firebaseArray(ref);
     var rec;
-
-    
 
     var refProj = firebase.database().ref().child('Projects');
     var projectsList = $firebaseArray(refProj);
@@ -111,7 +109,7 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
         emp = empList.$getRecord($scope.SelectedEmployee.$id);
 
         //update task
-        rec.Employee = { "ID" : emp.$id, "Name" : emp.FirstName };
+        rec.Employee = { "ID" : emp.$id, "Name" : emp.Name };
         rec.Project = { "ID" : proj.$id, "Name" : proj.Name };
         
         //add task to employee and project
