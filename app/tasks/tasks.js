@@ -67,11 +67,7 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
     var list = $firebaseArray(ref);
     var rec;
 
-    list.$loaded().then(function(x){ 
-        $scope.task = x.$getRecord(id);
-        rec = $scope.task;
-        
-    });
+    
 
     var refProj = firebase.database().ref().child('Projects');
     var projectsList = $firebaseArray(refProj);
@@ -80,6 +76,26 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
     var refEmp = firebase.database().ref().child('Employees');
     var empList = $firebaseArray(refEmp);
     $scope.employees = empList;
+
+    list.$loaded().then(function(x){ 
+        rec = x.$getRecord(id);
+        
+        projectsList.$loaded().then(function(){
+            projectsList.forEach(function(item){
+                if(rec.Project.ID == item.$id){
+                    $scope.SelectedProject = item
+                }
+            })
+        });
+        empList.$loaded().then(function(){
+            empList.forEach(function(item){
+                if(rec.Employee.ID == item.$id){
+                    $scope.SelectedEmployee = item
+                }
+            })
+        });
+        $scope.task = rec;
+    });
 
     $scope.UpdateRecord = function(){
         
@@ -91,8 +107,8 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase'])
         holderManipulation.RemoveTaskFromHolder(rec.$id, emp, empList);
 
         //new data
-        proj = projectsList.$getRecord($scope.update.task.Project.ID);
-        emp = empList.$getRecord($scope.update.task.Employee.ID);
+        proj = projectsList.$getRecord($scope.SelectedProject.$id);
+        emp = empList.$getRecord($scope.SelectedEmployee.$id);
 
         //update task
         rec.Employee = { "ID" : emp.$id, "Name" : emp.FirstName };
