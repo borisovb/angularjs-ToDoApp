@@ -8,7 +8,7 @@
 <div class="card mb-3">
   <div class="card-header">
     <i class="fa fa-table"></i> Departments 
-    <a href="#!/departments/departments-add"><button type="button" class="btn btn-success" style="float: right">Add</button></a>
+    <a href="#!/departments/department-add"><button type="button" class="btn btn-success" style="float: right">Add</button></a>
   </div>
 
   <div class="card-body">
@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-show="show">
+          <!--<tr ng-show="show">
             <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
             <td><a href="#!/employees">Add...</a></td>
             <td><a href="#!/projects">Add...</a></td>
@@ -33,14 +33,14 @@
               <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
             </td>
             
-          </tr>
+          </tr>-->
           <tr ng-repeat="department in data">
               <td>{{department.Name}}</td>
               <td>Employees</td>
               <td>Projects</td>
               <td class="d-flex justify-content-around aling-stretch" style="border: none">
-                <i class="far fa-edit text-primary"></i>
-                <i class="far fa-trash-alt text-danger"></i>
+                <a href="#!/departments/department-details/{{department.$id}}"><button class="btn"><i class="far fa-edit text-primary"></i></button></a>
+                <button class="btn" ng-click="delete(department.$id)"><i class="far fa-trash-alt text-danger" ></i></button> 
               </td>
             </tr>
         </tbody>

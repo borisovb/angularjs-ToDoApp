@@ -6,8 +6,9 @@ angular.module('myApp', [
   'myApp.tasks',
   'myApp.projects',
   'myApp.departments',
-  'firebase',
   'myApp.employees',
+  'myApp.data',
+  'firebase',
   'firebase'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
