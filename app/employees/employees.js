@@ -33,21 +33,39 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
     
     var refProjects = firebase.database().ref().child('Projects');
     var projectsList = $firebaseArray(refProjects);
-    $scope.departments = projectsList;
+    $scope.projects = projectsList;
 
     var refTasks = firebase.database().ref().child('Tasks');
     var tasksList = $firebaseArray(refTasks);
     $scope.tasks = tasksList;
 
-    $scope.DeleteRecord = function(recId){
-        var employee = empList.$getRecord(recId);
-        var projects = employee.Projects;
+    $scope.AddRecord = function AddEmployee (record){
+        depList.forEach(dep => {
+            if(dep.$id === record.Department){
+                record.Department = {};
+                var dep = { "ID" : dep.$id, "Name" : dep.Name};
+                record.Department = dep;
+            }
+        });
 
-        // Remove employee from project
-        removeAtIndex(projectsList, recId, 'projects');
-        removeAtIndex(tasksList, recId, 'tasks');   
-        empList.$remove(employee);     
-        empList.$save(employee);
+        empList.$add(record);
+        $scope.record = {};
+        $scope.show = false;
+        alert(record.Name + " is added successfully!");
+    };
+
+    $scope.DeleteRecord = function DeleteEmployee (recId){
+        var employee = empList.$getRecord(recId);
+        var answer = confirm("Do you really want to delete " + employee.Name + "?");
+        if (answer) {
+            // Remove employee from projects
+            removeAtIndex(projectsList, recId, 'projects');
+            // Remove employee from the task
+            removeAtIndex(tasksList, recId, 'tasks');
+            // Remove employee record from the database
+            empList.$remove(employee);
+        }
+        
 
         function removeAtIndex(list, employeeId, type) {
             for (let i = 0; i < list.length; i++) {
@@ -72,50 +90,21 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
             }
         }
     }
+    
+
 })
 
 .controller('EmployeeDetailsCtrl', function($scope, $firebaseArray, $routeParams, $route){
     var empId = $routeParams.id;
     var ref = firebase.database().ref().child('Employees');
     var empList = $firebaseArray(ref);
+    
     empList.$loaded().then(function(x){ 
-    $scope.employee = x.$getRecord(empId);
-})
+        $scope.employee = x.$getRecord(empId);
+    })
 })
 
 .controller('EmployeeEditCtrl', function($scope, $firebaseArray, $routeParams, $route){
-    var empId = $routeParams.id;
-    var ref = firebase.database().ref().child('Employees');
-    var empList = $firebaseArray(ref);
-    var currentRecord;
-    
-    empList.$loaded().then(function(x){ 
-    currentRecord = x.$getRecord(empId);
-    $scope.employee = currentRecord;
-
-    $scope.UpdateRecord = function(){
-        empList.$save(currentRecord).then(function(){
-            $route.reload()
-        });
-
-        //TODO : UPDATE OTHER ENTITIES
-    };
-})
-})
-
-.controller('EmployeeAddCtrl', function($scope, $firebaseArray){
-    var refEmp = firebase.database().ref().child('Employees');
-    $scope.employees = $firebaseArray(refEmp);
-
-    var refDep = firebase.database().ref().child('Departments');
-    $scope.departments = $firebaseArray(refDep);
-
-    var refProjects = firebase.database().ref().child('Projects');
-    $scope.projects = $firebaseArray(refProjects);
-
-    var refTasks = firebase.database().ref().child('Tasks');
-    $scope.tasks = $firebaseArray(refTasks);
-    console.log($scope.tasks)
 })
 
 

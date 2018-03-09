@@ -2,8 +2,7 @@
         <div class="heading">Employee Details</div>
         <div class="flex flex-row content-holder">
             <div class="col-3">
-                <div class="cell">First Name</div>
-                <div class="cell">Last Name</div>
+                <div class="cell">Name</div>
                 <div class="cell">Date of Birth</div>
                 <div class="cell">Hire Date</div>
                 <div class="cell">Job</div>
@@ -13,20 +12,20 @@
             </div>
     
             <div class="col-4">
-                <input class="cell form-control" ng-model="employee.FirstName" type="text">
-                <input class="cell form-control" ng-model="employee.LastName" type="text">
-                <input class="cell form-control" ng-model="employee.DateOfBirth" type="text">
-                <input class="cell form-control" ng-model="employee.HireDate" type="text">
-                <input class="cell form-control" ng-model="employee.JobTitle" type="text">
-                <select class="form-control" ng-model="employee.Department">
-                        <option ng-repeat="department in departments" value="{{ department.Name }}"> {{ department.Name }}</option>
-                </select>
-                
+                <p>{{employee.Name}}</p>
+                <p>{{employee.DateOfBirth}}</p>
+                <p>{{employee.HireDate}}</p>
+                <p>{{employee.JobTitle}}</p>
+                <p>{{employee.Department.Name}}</p>
                 <div class="container" style="border:2px solid #ccc; width:300px; height: 100px; overflow-y: scroll;">
-                        <div ng-repeat="project in projects"> <input type="checkbox" /> {{ project.Name }} </div>
+                    <ul ng-repeat="project in employee.Projects">
+                        <li>{{project.Name}}</li>
+                    </ul>
                 </div>
                 <div class="container" style="border:2px solid #ccc; width:300px; height: 100px; overflow-y: scroll;">
-                        <div ng-repeat="task in tasks"> <input type="checkbox" /> {{ task.Title }} </div>
+                    <ul ng-repeat="task in employee.Tasks">
+                        <li>{{task.Title}}</li>
+                    </ul> 
                 </div>
             </div>
         </div>
