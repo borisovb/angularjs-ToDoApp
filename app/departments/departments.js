@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
+angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', 'myApp.data', 'myApp.departments.departmentsManager'])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/departments', {
         templateUrl: 'departments/departments.html',
@@ -18,8 +18,8 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
     });
 }])
 
-.controller('DepartmentsCtrl', ['$scope', '$firebaseArray', 
-    function($scope, $firebaseArray) {
+.controller('DepartmentsCtrl', ['$scope', '$firebaseArray', 'departmentsManager', 'database',
+    function($scope, $firebaseArray, departmentsManager, database) {
         var ref = firebase.database().ref();
         var refDep = ref.child('Departments');
         var refEmp = ref.child('Employees');
@@ -29,7 +29,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
         var projList = $firebaseArray(refProj);
         var depList = $firebaseArray(refDep);
 
-        $scope.data = depList;
+        $scope.data = departmentsManager.getDepartments();
 
         $scope.delete = function(departmentId) {
             var depRec = $scope.data.$getRecord(departmentId);
@@ -76,6 +76,13 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
                 });
             }
         }
+
+        $scope.add = function(record) {
+            departmentsManager.addDepartment(record);
+            $scope.record.Name = "";
+        }
+
+
 }])
 
 .controller('AddDepartmentCtrl', ['$scope', '$firebaseArray', 
@@ -94,15 +101,17 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
             var empList = [{}];
             var projList = [{}];
 
+            
             var tempIndex = 0;
             for(var emp in $scope.record.Employees) {
-                var empRec = $scope.employees.$getRecord(emp);
+                var empRec = $scope.record.Employees[emp];
                 var temp = {};
                 temp.ID = empRec.$id;
                 temp.Name = empRec.Name;
                 empList[tempIndex++] = temp;
             }
 
+            console.log(empList);
             tempIndex = 0;
             for(var prj in $scope.record.Projects) {
                 var projRec = $scope.projects.$getRecord(prj);
@@ -115,7 +124,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
             $scope.record.Employees = empList;
             $scope.record.Projects = projList;
 
-            list.$add($scope.record)
+           list.$add($scope.record)
             .then(function(newRec) {
                 for(var emp in empList) {
                     var employeeRec = $scope.employees.$getRecord(emp);
@@ -131,7 +140,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model'])
                     $scope.projects.$save(projRec);
                 }
                 $scope.record = {};
-            });  
+            });
         };
 }]);
 
