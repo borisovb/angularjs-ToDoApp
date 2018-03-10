@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.employees', ['ngRoute', 'firebase'])
+angular.module('myApp.employees', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/employees', {
@@ -11,10 +11,6 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
         templateUrl: 'employees/employee-detail.html',
         controller: 'EmployeeDetailsCtrl'
     });
-    $routeProvider.when('/employees/add',{
-        templateUrl: 'employees/employee-add.html',
-        controller: 'EmployeeAddCtrl'
-    });
     $routeProvider.when('/employees/edit/:id',{
         templateUrl: 'employees/employee-edit.html',
         controller: 'EmployeeEditCtrl'
@@ -22,21 +18,15 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
 
 }])
 
-.controller('EmployeesCtrl', function($scope, $firebaseArray){
-    var refEmp = firebase.database().ref().child('Employees');
-    var empList = $firebaseArray(refEmp);
-    $scope.employees = empList;
-
-    var refDep = firebase.database().ref().child('Departments');
-    var depList = $firebaseArray(refDep);
-    $scope.departments = depList;
+.controller('EmployeesCtrl', function($scope, database){
+    var empList = database.getCollection("Employees");
+    var depList = database.getCollection("Departments");
+    var projectsList = database.getCollection("Projects");
+    var tasksList = database.getCollection("Tasks");
     
-    var refProjects = firebase.database().ref().child('Projects');
-    var projectsList = $firebaseArray(refProjects);
+    $scope.employees = empList;
+    $scope.departments = depList;
     $scope.projects = projectsList;
-
-    var refTasks = firebase.database().ref().child('Tasks');
-    var tasksList = $firebaseArray(refTasks);
     $scope.tasks = tasksList;
 
     $scope.AddRecord = function AddEmployee (record){
@@ -94,17 +84,52 @@ angular.module('myApp.employees', ['ngRoute', 'firebase'])
 
 })
 
-.controller('EmployeeDetailsCtrl', function($scope, $firebaseArray, $routeParams, $route){
+.controller('EmployeeDetailsCtrl', function($scope, database, $routeParams, $route){
     var empId = $routeParams.id;
-    var ref = firebase.database().ref().child('Employees');
-    var empList = $firebaseArray(ref);
+    var empList = database.getCollection("Employees");
     
     empList.$loaded().then(function(x){ 
         $scope.employee = x.$getRecord(empId);
     })
 })
 
-.controller('EmployeeEditCtrl', function($scope, $firebaseArray, $routeParams, $route){
+.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route){
+    var empId = $routeParams.id;
+
+    var empList = database.getCollection("Employees");
+    var depList = database.getCollection("Departments");
+
+    $scope.departments = depList;
+
+    var currentRecord;
+    
+    empList.$loaded().then(function(x){ 
+        $scope.selectedEmployee = x.$getRecord(empId);
+        currentRecord = $scope.selectedEmployee;
+    })
+
+    $scope.departments.$loaded().then(function(){
+        $scope.departments.forEach(function(item){
+            if(currentRecord.Department.ID == item.$id){
+                $scope.selectedDepartment = item
+            }
+        })
+    });
+        
+    $scope.UpdateRecord = function UpdateRecord (){
+
+        if (currentRecord.Department.ID != $scope.selectedDepartment.$id) {
+
+            currentRecord.Department.ID = $scope.selectedDepartment.$id;
+            currentRecord.Department.Name = $scope.selectedDepartment.Name;
+        }
+
+        empList.$save(currentRecord).then(function(){
+            $route.reload();
+        });
+    };
+
+    
 })
 
 

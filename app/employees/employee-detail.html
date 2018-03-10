@@ -17,15 +17,13 @@
                 <p>{{employee.HireDate}}</p>
                 <p>{{employee.JobTitle}}</p>
                 <p>{{employee.Department.Name}}</p>
-                <div class="container" style="border:2px solid #ccc; width:300px; height: 100px; overflow-y: scroll;">
-                    <ul ng-repeat="project in employee.Projects">
-                        <li>{{project.Name}}</li>
-                    </ul>
-                </div>
-                <div class="container" style="border:2px solid #ccc; width:300px; height: 100px; overflow-y: scroll;">
-                    <ul ng-repeat="task in employee.Tasks">
-                        <li>{{task.Title}}</li>
-                    </ul> 
+                <p>   <ul>
+                        <li ng-repeat="project in employee.Projects">{{project.Name}}</li>
+                    </ul></p>
+               
+                    <p> <ul>
+                        <li ng-repeat="task in employee.Tasks">{{task.Name}}</li>
+                    </ul> </p>
                 </div>
             </div>
         </div>

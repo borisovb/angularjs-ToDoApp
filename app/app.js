@@ -2,14 +2,13 @@
 
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
-  'ngRoute',  
+  'ngRoute',
+  'firebase',
+  'myApp.data',
   'myApp.tasks',
   'myApp.projects',
   'myApp.departments',
-  'myApp.employees',
-  'myApp.data',
-  'firebase',
-  'firebase'
+  'myApp.employees'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
