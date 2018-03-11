@@ -63,7 +63,7 @@ angular.module('myApp.employees', ['ngRoute'])
                     for (let j = 0; j < list[i].Employees.length; j++) {
                         if(list[i].Employees[j].ID == employeeId) {
                             if(list[i].Employees.length === 1){
-                                list[i].Employees.push({ "Fake" : true });
+                                list[i].Employees.push({ Fake: true });
                                 list.$save(list[i]);                                                            
                             }
 
