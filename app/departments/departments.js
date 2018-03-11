@@ -7,10 +7,10 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
         controller: 'DepartmentsCtrl'
     });
 
-    $routeProvider.when('/departments/department-add', {
+    /*$routeProvider.when('/departments/department-add', {
         templateUrl: 'departments/department-add.html',
         controller: 'AddDepartmentCtrl'
-    });
+    });*/
 
     $routeProvider.when('/departments/department-details/:id', {
         templateUrl: 'departments/department-details.html',
@@ -31,61 +31,21 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
 
         $scope.data = departmentsManager.getDepartments();
 
-        $scope.delete = function(departmentId) {
-            var depRec = $scope.data.$getRecord(departmentId);
-
-            $scope.data.$remove($scope.data.$indexFor(departmentId))
-            .then(function(newRec) {
-                for(var employee in depRec.Employees) {
-                    var empRec = empList.$getRecord(employee);
-                    empRec.Department = {"Fake" : true };
-
-                    empList.$save(empRec);
-                }
-
-                for(var proj in depRec.Projects) {
-                    var projRec = projList.$getRecord(proj);
-                    projRec.Department = { "Fake" : true };
-
-                    projList.$save(projRec);
-                }
-            });
-        }
-        
-        $scope.update = function(newName, depId) {
-            var depRec = $scope.data.$getRecord(depId);
-
-            if(!angular.isUndefined(newName)) {
-                depRec.Name = newName;
-
-                
-                depList.$save(depRec).then(function(newRec) {
-                    for(var emp in depRec.Employees) {
-                        var empRec = empList.$getRecord(depRec.Employees[emp].ID);
-                        empRec.Department.Name = newName;
-
-                        empList.$save(empRec);
-                    }
-                    
-                    for(var prj in depRec.Projects) {
-                        var projRec = projList.$getRecord(depRec.Projects[prj].ID);
-                        projRec.Department.Name = newName;
-
-                        projList.$save(projRec);
-                    }
-                });
-            }
-        }
-
         $scope.add = function(record) {
             departmentsManager.addDepartment(record);
             $scope.record.Name = "";
         }
 
+        $scope.update = function(newName, depId) {
+            departmentsManager.updateDepartment(newName, depId);
+        }
 
+        $scope.delete = function(id) {
+            departmentsManager.removeDepartment(id);
+        }        
 }])
 
-.controller('AddDepartmentCtrl', ['$scope', '$firebaseArray', 
+/*.controller('AddDepartmentCtrl', ['$scope', '$firebaseArray', 
     function($scope, $firebaseArray) {
         var ref = firebase.database().ref();
         var list = $firebaseArray(ref.child('Departments'));
@@ -142,7 +102,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
                 $scope.record = {};
             });
         };
-}]);
+}]);*/
 
 /*.controller('DepartmentDetailsCtrl', ['$scope', '$firebaseArray', '$routeParams', 
     function($scope, $firebaseArray, $routeParams) {
