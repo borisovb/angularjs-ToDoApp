@@ -18,7 +18,7 @@
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>Title</th>
+            <th>Name</th>
 
             <th>Description</th>
 
@@ -35,7 +35,7 @@
 
         <tbody>
             <tr ng-show="show">
-                <td><input type="text" ng-model="record.Title" class="form-control" placeholder="Title" ng-required="required"></td>
+                <td><input type="text" ng-model="record.Name" class="form-control" placeholder="Title" ng-required="required"></td>
                 <td><input type="text" ng-model="record.Description" class="form-control" placeholder="Description" ng-required="required"></td>
                 <td><input type="text" ng-model="record.Importance" class="form-control" placeholder="Importance" ng-required="required"></td>
                 <td><input type="text" ng-model="record.CreationDate" class="form-control" placeholder="DD.MM.YYYY" ng-required="required"></td>
@@ -48,7 +48,7 @@
                 
                 <td> 
                     <select class="form-control" ng-model="record.Employee.ID" >
-                      <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.FirstName}} {{employee.LastName}}</option>
+                      <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.Name}}</option>
                     </select>
                 </td>
       
@@ -60,7 +60,7 @@
                 
               </tr>
           <tr ng-repeat="task in data">
-            <td>{{task.Title}}</td>
+            <td>{{task.Name}}</td>
 
             <td>{{task.Description}}</td>
 

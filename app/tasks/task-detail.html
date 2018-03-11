@@ -2,7 +2,7 @@
     <div class="heading">Update task</div>
     <div class="flex flex-row content-holder">
         <div class="col-3">
-            <div class="cell">Title</div>
+            <div class="cell">Name</div>
             <div class="cell">Description</div>
             <div class="cell">Importance</div>
             <div class="cell">Creation Date</div>
@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-4">
-            <div class="cell">{{::task.Title}}</div>
+            <div class="cell">{{::task.Name}}</div>
             <div class="cell">{{::task.Description}}</div>    
             <div class="cell">{{::task.Importance}}</div>    
             <div class="cell">{{::task.CreationDate}}</div>    
@@ -22,18 +22,13 @@
         </div>
 
         <div class="right-poss col-4">
-            <input class="cell form-control" ng-model="task.Title" type="text">
+            <input class="cell form-control" ng-model="task.Name" type="text">
             <input class="cell form-control" ng-model="task.Description" type="text">
             <input class="cell form-control" ng-model="task.Importance" type="text">
             <input class="cell form-control" ng-model="task.CreationDate" type="text">
             <input class="cell form-control" ng-model="task.CompletionDate" type="text">
-
-            <select class="cell form-control" ng-model="update.task.Project.ID" >
-                <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>
-            </select>
-            <select class="cell form-control" ng-model="update.task.Employee.ID" >
-                <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.FirstName}} {{employee.LastName}}</option>
-            </select>
+            <select class="cell form-control" ng-options="project.Name for project in projects track by project.$id" ng-model="SelectedProject" ></select>
+            <select class="cell form-control" ng-options="employee.Name for employee in employees track by employee.$id" ng-model="SelectedEmployee"></select>
         </div>
     </div>
     <div class="center">

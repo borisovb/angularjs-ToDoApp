@@ -1,12 +1,11 @@
 'use strict'
 
-angular.module('myApp.tasks')
+angular.module('myApp.tasks.holders', [])
 
 .factory('holderManipulation', function(){
 
     function RemoveTaskFromHolder(taskID, holder, collection){
         var taskIndex = findIdIndex(holder.Tasks, taskID);
-        
         if(taskIndex >= 0){
             holder.Tasks.splice(taskIndex, 1);
 
@@ -22,7 +21,6 @@ angular.module('myApp.tasks')
         holder.Tasks.push(task);
         collection.$save(holder);
     }
-
 
     function findIdIndex(array, id){
         for (const key in array) {

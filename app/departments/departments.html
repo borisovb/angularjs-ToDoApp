@@ -8,7 +8,8 @@
 <div class="card mb-3">
   <div class="card-header">
     <i class="fa fa-table"></i> Departments 
-    <a href="#!/departments/departments-add"><button type="button" class="btn btn-success" style="float: right">Add</button></a>
+    <!--<a href="#!/departments/department-add"><button type="button" class="btn btn-success" style="float: right">Add</button></a>-->
+    <button type="button" class="btn btn-success" ng-click="showAdd=!showAdd" style="float: right">Add</button>
   </div>
 
   <div class="card-body">
@@ -22,25 +23,40 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-show="show">
-            <td><input type="text" class="form-control" placeholder="Name..." ng-required="required"></td>
+          <tr ng-show="showAdd">
+            <td><input type="text" class="form-control" placeholder="Name..." ng-model="record.Name" ng-required="required"></td>
             <td><a href="#!/employees">Add...</a></td>
             <td><a href="#!/projects">Add...</a></td>
 
             <td class="d-flex justify-content-around aling-stretch" style="border: none">
 
-              <button class="btn"><i class="fas fa-plus-square text-success"></i></button>
-              <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
+              <button class="btn" ng-click="add(record); showAdd=false"><i class="fas fa-plus-square text-success"></i></button>
+              <button class="btn" ng-click="showAdd=false"><i class="fas fa-times text-danger"></i></button>
             </td>
             
           </tr>
           <tr ng-repeat="department in data">
-              <td>{{department.Name}}</td>
+              <td><div class="d-flex"><div class="mr-auto" ng-hide="show">{{department.Name}}</div>
+                <input type="text" class="form-control mr-2" ng-value="department.Name" ng-model="record.newName" ng-show="show">
+
+                <div ng-hide="show" class="ml-auto">
+                  <button class="btn" ng-click="show=!show"><i class="far fa-edit text-primary"></i></button>
+                </div>
+                <div class="d-flex justify-items-around" ng-show="show">
+                  <button class="btn" ng-click="show=!show; update(record.newName, department.$id)"><i class="fas fa-check text-success"></i></button>
+                  <button class="btn" ng-click="show=!show;"><i class="fas fa-times text-danger"></i></button>
+                </div>
+              </div>
+                  
+                <!--<a style="margin-right: 0" href="#!/departments/department-details/{{department.$id}}">
+                  
+                </a>-->
+              </td>
               <td>Employees</td>
               <td>Projects</td>
               <td class="d-flex justify-content-around aling-stretch" style="border: none">
-                <i class="far fa-edit text-primary"></i>
-                <i class="far fa-trash-alt text-danger"></i>
+                
+                <button class="btn" ng-click="delete(department.$id)"><i class="far fa-trash-alt text-danger" ></i></button> 
               </td>
             </tr>
         </tbody>
