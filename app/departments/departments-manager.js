@@ -2,7 +2,7 @@
 
 angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.departments.holders'])
 
-.factory('departmentsManager', ['database', 'holderManipulation', '$window', 
+.factory('departmentsManager', ['database', 'departmentHolderManipulation', '$window', 
     function(database, holderManipulation, $window) {
     var departments;
     var employees;
