@@ -2,7 +2,7 @@
 
 angular.module('myApp.tasks.holders', [])
 
-.factory('holderManipulation', function(){
+.factory('taskHolderManipulation', function(){
 
     function RemoveTaskFromHolder(taskID, holder, collection){
         var taskIndex = findIdIndex(holder.Tasks, taskID);

@@ -16,7 +16,7 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data'])
             task['CompletionDate'] = new Date(task['CompletionDate']);
         });
         loadedTasks.sort(function(a, b){
-            return a['CompletionDate'] - b['CompletionDate'];
+            return b['CompletionDate'] - a['CompletionDate'];
         });
         loadedTasks.splice(3);
         $scope.tasks = loadedTasks  ;

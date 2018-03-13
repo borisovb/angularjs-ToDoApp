@@ -2,7 +2,7 @@
 
 angular.module('myApp.departments.holders', [])
 
-.factory('holderManipulation', function() {
+.factory('departmentHolderManipulation', function() {
     function removeDepartmentFromHolder(holder, collection) {
         if(!holder.Department.hasOwnProperty(Fake)) {
             holder.Department = {Fake: true};
