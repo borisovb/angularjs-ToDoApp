@@ -35,8 +35,8 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
             return department;
         })
         .then(function(){
-            record.Tasks = {"Fake": true};
-            record.Projects = {"Fake": true};
+            record.Tasks = [{"Fake": true}];
+            record.Projects = [{"Fake": true}];
             employees.$add(record).then(function(newRec){
                 alert(record.Name + " is added successfully!");
             }); 

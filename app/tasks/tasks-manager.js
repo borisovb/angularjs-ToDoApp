@@ -1,7 +1,7 @@
 'use strict'
 angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
 
-.factory('tasks', function(database, holderManipulation){
+.factory('tasks', function(database, taskHolderManipulation){
 
     var tasks;
     var projects;
@@ -43,9 +43,9 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
         
         Promise.all([project, employee]).then(function(values){
             tasks.$add(record).then(function(newRec){
-                var shortTask = {"ID": newRec.key, "Name" : record.Title};
-                holderManipulation.AddTaskToHolder(shortTask, values[0], projects);
-                holderManipulation.AddTaskToHolder(shortTask, values[1], employees);
+                var shortTask = {"ID": newRec.key, "Name" : record.Name};
+                taskHolderManipulation.AddTaskToHolder(shortTask, values[0], projects);
+                taskHolderManipulation.AddTaskToHolder(shortTask, values[1], employees);
             });
         });
     }
@@ -53,15 +53,14 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
     function DeleteTask(recordID){
         SaveLoadTasks().then(function(loadedTasks){
             var task  = loadedTasks.$getRecord(recordID);
-
             var projectsPromise =  SaveLoadProjects().then(function(loadedProjects){
                 var project = loadedProjects.$getRecord(task.Project.ID);
-                holderManipulation.RemoveTaskFromHolder(recordID, project, loadedProjects);
+                taskHolderManipulation.RemoveTaskFromHolder(recordID, project, loadedProjects);
             });
         
             var employeesPromise =  SaveLoadEmployees().then(function(loadedEmployees){
                 var employee = loadedEmployees.$getRecord(task.Employee.ID);
-                holderManipulation.RemoveTaskFromHolder(recordID, employee, loadedEmployees);
+                taskHolderManipulation.RemoveTaskFromHolder(recordID, employee, loadedEmployees);
             });
 
             Promise.all([projectsPromise, employeesPromise]).then(function(){
@@ -71,17 +70,17 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
     }
 
     function UpdateTask(updatedRecord, oldProjectID, oldEmployeeID){
-        var shortTask = { "ID" : updatedRecord.$id, "Name" : updatedRecord.Title };
+        var shortTask = { "ID" : updatedRecord.$id, "Name" : updatedRecord.Name };
 
         var projectsPromise = SaveLoadProjects().then(function(loadedProjects){
             if (updatedRecord.Project.ID != oldProjectID) {
                 var project = loadedProjects.$getRecord(oldProjectID);
-                holderManipulation.RemoveTaskFromHolder(updatedRecord.$id, project, loadedProjects)
+                taskHolderManipulation.RemoveTaskFromHolder(updatedRecord.$id, project, loadedProjects)
     
                 var newProject = loadedProjects.$getRecord(updatedRecord.Project.ID);
                 updatedRecord.Project.Name = newProject.Name;
     
-                holderManipulation.AddTaskToHolder(shortTask, newProject, loadedProjects);
+                taskHolderManipulation.AddTaskToHolder(shortTask, newProject, loadedProjects);
             } else {
                 //Handle task name update in the holder
             }
@@ -90,12 +89,12 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
         var employeesPromise = SaveLoadEmployees().then(function(loadedEmployees){
             if (updatedRecord.Employee.ID != oldEmployeeID) {
                 var employee = loadedEmployees.$getRecord(oldEmployeeID);
-                holderManipulation.RemoveTaskFromHolder(updatedRecord.$id, employee, loadedEmployees);
+                taskHolderManipulation.RemoveTaskFromHolder(updatedRecord.$id, employee, loadedEmployees);
     
                 var newEmployee = loadedEmployees.$getRecord(updatedRecord.Employee.ID);
                 updatedRecord.Employee.Name = newEmployee.Name;
     
-                holderManipulation.AddTaskToHolder(shortTask, newEmployee, loadedEmployees);
+                taskHolderManipulation.AddTaskToHolder(shortTask, newEmployee, loadedEmployees);
             } else {
                 //Handle task name update in the holder
             }
