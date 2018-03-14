@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders'])
 
 .factory('employeesManager', function(database, employeesHolderManipulation){
@@ -25,28 +25,34 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
 
     function AddEmployee(record){
 
-        if(departments == undefined){
-            departments = database.getCollection("Departments");
-        }
+        var depId;
+        var departmentsList;
 
-        departments.$loaded().then(function(list){
-            var department = list.$getRecord(record.Department.ID);
+        SaveLoadDepartments().then(function(list){
+            departmentsList = list;
+            depId = record.Department.ID;
+
+
+            var department = departmentsList.$getRecord(depId);
             record.Department.Name = department.Name;
-            return department;
-        })
-        .then(function(){
+
             record.Tasks = {"Fake": true};
             record.Projects = {"Fake": true};
+
             employees.$add(record).then(function(newRec){
+                var shortEmployee = { "ID" : newRec.key, "Name" : record.Name };
+                employeesHolderManipulation.AddEmployeeToDepartment(shortEmployee, depId, departmentsList);
                 alert(record.Name + " is added successfully!");
-            }); 
+            });
         });
+
     }
 
     function DeleteEmployee(recordID) {
 
         SaveLoadEmployees().then(function(loadedEmployees){
             var employee  = loadedEmployees.$getRecord(recordID);
+            var departmentId = employee.Department.ID;
             var projectIds = [];
             var answer = confirm("Do you really want to delete " + employee.Name + "?");
             if (answer) {
@@ -59,19 +65,15 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
                     SaveLoadProjects().then(function(loadedProjects){
                         employeesHolderManipulation.RemoveEmployeeFromProjects(projectIds, recordID, loadedProjects);
                     })
+                    SaveLoadDepartments().then(function(loadedDepartments){
+                        employeesHolderManipulation.RemoveEmployeeFromDepartments(departmentId, recordID, loadedDepartments);
+                    })
                     loadedEmployees.$remove(employee);
                 } else {
                     alert("You can not delete employee with assigned task/s.")
                 }
             }
         })
-    }
-
-    function UpdateEmployeeDepartment(currentRecord, selectedDepartment){
-        if (currentRecord.Department.ID != selectedDepartment.$id) {
-            currentRecord.Department.ID = selectedDepartment.$id;
-            currentRecord.Department.Name = selectedDepartment.Name;
-        }
     }
 
     function SaveLoadEmployees(){
@@ -97,19 +99,19 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
     }
 
     function SaveLoadDepartments(){
-        if (departmnets === undefined) {
+        if (departments === undefined) {
             departments = database.getCollection("Departments");
         }
         return departments.$loaded();
     }
 
-    
+
 
     return {
         GetEmployees : GetEmployees,
         GetEmployeeById : GetEmployeeById,
         AddEmployee : AddEmployee,
-        DeleteEmployee : DeleteEmployee, 
+        DeleteEmployee : DeleteEmployee,
         UpdateEmployeeDepartment : UpdateEmployeeDepartment
     }
 })
