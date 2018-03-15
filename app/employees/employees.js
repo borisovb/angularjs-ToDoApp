@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager'])
+angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.employees.holders'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/employees', {
@@ -23,7 +23,7 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager'])
     var depList = database.getCollection("Departments");
     var projectsList = database.getCollection("Projects");
     var tasksList = database.getCollection("Tasks");
-    
+
     $scope.data = employeesManager.GetEmployees();
     $scope.departments = depList;
     $scope.projects = projectsList;
@@ -33,23 +33,23 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager'])
         employeesManager.AddEmployee($scope.record);
         $scope.record = {};
         $scope.show = false;
-    }
-   
+    };
+
     $scope.DeleteRecord = function(recId){
         employeesManager.DeleteEmployee(recId);
-    }
+    };
 })
 
 .controller('EmployeeDetailsCtrl', function($scope, database, $routeParams, $route){
     var empId = $routeParams.id;
     var empList = database.getCollection("Employees");
-    
-    empList.$loaded().then(function(x){ 
+
+    empList.$loaded().then(function(x){
         $scope.employee = x.$getRecord(empId);
     })
 })
 
-.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesManager){
+.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesHolderManipulation){
     var empId = $routeParams.id;
 
     var empList = database.getCollection("Employees");
@@ -58,8 +58,8 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager'])
     $scope.departments = depList;
 
     var currentRecord;
-    
-    empList.$loaded().then(function(x){ 
+
+    empList.$loaded().then(function(x){
         $scope.selectedEmployee = x.$getRecord(empId);
         currentRecord = $scope.selectedEmployee;
     })
@@ -71,17 +71,21 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager'])
             }
         })
     });
-        
+
     $scope.UpdateRecord = function UpdateRecord (){
-        employeesManager.UpdateEmployeeDepartment(currentRecord, $scope.selectedDepartment);
-        empList.$save(currentRecord).then(function(){
+
+        if (currentRecord.Department.ID != $scope.selectedDepartment.$id) {
+            employeesHolderManipulation.RemoveEmployeeFromDepartments(currentRecord.Department.ID, currentRecord.$id, depList);
+            currentRecord.Department.ID = $scope.selectedDepartment.$id;
+            currentRecord.Department.Name = $scope.selectedDepartment.Name;
+        }
+        empList.$save(currentRecord).then(function(newRec){
+            var shortEmployee = { "ID" : newRec.key, "Name" : currentRecord.Name };
+            employeesHolderManipulation.AddEmployeeToDepartment(shortEmployee, $scope.selectedDepartment.$id, depList);
             $route.reload();
             alert('Employee updated!');
         });
     };
 
-    
+
 })
-
-
-
