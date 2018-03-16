@@ -19,6 +19,7 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data'])
             return b['CompletionDate'] - a['CompletionDate'];
         });
         loadedTasks.splice(3);
-        $scope.tasks = loadedTasks  ;
+        console.log(loadedTasks);
+        $scope.tasks = loadedTasks;
     });
 });

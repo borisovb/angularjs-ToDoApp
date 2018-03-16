@@ -46,7 +46,7 @@
               </select></td>
               <!-- <td><input type="text" name="imp" class="form-control" ng-model="record.Importance" required></td> -->
               <td><md-datepicker ng-model="picker.CreationDate" md-hide-icons="calendar" required></md-datepicker></td>
-              <td><md-datepicker ng-model="picker.CompletionDate" md-hide-icons="calendar" required></md-datepicker></td>
+              <td><md-datepicker ng-model="picker.CompletionDate" md-hide-icons="calendar" md-min-date="picker.CreationDate" required></md-datepicker></td>
               <td> 
                 <select class="form-control" ng-model="record.Project.ID" required>
                   <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>

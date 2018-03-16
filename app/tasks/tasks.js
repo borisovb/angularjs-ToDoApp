@@ -22,8 +22,8 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
     $scope.employees = database.getCollection("Employees");
 
     $scope.AddRecord = function(){
-        $scope.record.CreationDate = $filter('date')($scope.picker.CreationDate, "dd/MM/yyyy");
-        $scope.record.CompletionDate = $filter('date')($scope.picker.CompletionDate, "dd/MM/yyyy");
+        $scope.record.CreationDate = $filter('date')($scope.picker.CreationDate, "MM/dd/yyyy");
+        $scope.record.CompletionDate = $filter('date')($scope.picker.CompletionDate, "MM/dd/yyyy");
         tasks.AddTask($scope.record);
     }
 
@@ -58,8 +58,8 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
     });
 
     $scope.UpdateRecord = function(){
-        $scope.task.CreationDate = $filter('date')($scope.picker.CreationDate, "dd/MM/yyyy");
-        $scope.task.CompletionDate = $filter('date')($scope.picker.CompletionDate, "dd/MM/yyyy");
+        $scope.task.CreationDate = $filter('date')($scope.picker.CreationDate, "MM/dd/yyyy");
+        $scope.task.CompletionDate = $filter('date')($scope.picker.CompletionDate, "MM/dd/yyyy");
 
         var oldProjectId = $scope.task.Project.ID;
         var oldEmployeeId = $scope.task.Employee.ID;
