@@ -4,6 +4,18 @@
   </li>
   <li class="breadcrumb-item active">Projects</li>
 </ol>
+
+<form class="form-inline my-2 my-lg-0 mr-lg-2" style="float:right;">
+  <div class="input-group">
+    <input class="form-control" type="text" ng-model='searchBox' placeholder="Search for...">
+    <span class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+  </div>
+</form><br><br>
+
 <div class="card mb-3">
   <div class="card-header">
     <i class="fa fa-table"></i>Projects</div>
@@ -21,7 +33,7 @@
             <th>Completion date</th>
           </tr>
         </thead>
-        <tbody ng-repeat="project in data">
+        <tbody ng-repeat="project in data | filter: searchBox">
           <td>{{project.Name}}</td>
           <td>{{project.Description}}</td>
           <td>{{project.Department.Name}}</td>
