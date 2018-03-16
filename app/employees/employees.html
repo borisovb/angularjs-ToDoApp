@@ -23,6 +23,7 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
+              <form name="addEmployee" novalidate>
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
@@ -37,20 +38,20 @@
               </thead>
               <tbody>
                   <tr ng-show="show">
-                      <td> <input class="form-control" ng-model="record.Name" type="text"> </td>
-                      <td> <input class="form-control" ng-model="record.DateOfBirth" type="text"> </td>
-                      <td> <input class="form-control" ng-model="record.HireDate" type="text"> </td>
-                      <td> <input class="form-control" ng-model="record.JobTitle" type="text"> </td>
+                      <td> <input class="form-control" ng-model="record.Name" type="text" required> </td>
+                      <td> <input class="form-control" ng-model="record.DateOfBirth" type="text" required> </td>
+                      <td> <input class="form-control" ng-model="record.HireDate" type="text" required> </td>
+                      <td> <input class="form-control" ng-model="record.JobTitle" type="text" required> </td>
                       <td>
-                          <select class="form-control" ng-model="record.Department.ID">
+                          <select class="form-control" ng-model="record.Department.ID" required>
                               <option ng-repeat="department in departments" value="{{ department.$id }}"> {{ department.Name }}</option>
                           </select>
                       </td>
                       <td> ... </td>
                       <td> ... </td>
-                      
+
                       <td class="d-flex justify-content-around aling-stretch" style="border: none">
-                          <button ng-click="AddRecord(record)" class="btn"><i class="fas fa-plus-square text-success"></i></button>
+                          <button ng-click="AddRecord(record)" ng-disabled="addEmployee.$invalid" class="btn"><i class="fas fa-plus-square text-success"></i></button>
                           <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button>         
                       </td>
                     </tr>
@@ -71,6 +72,7 @@
               </tbody>
             </table>
           </div>
+            </form>
         </div>
        <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
       </div>

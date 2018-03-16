@@ -18,16 +18,18 @@
                         <div> {{ ::selectedEmployee.Department.Name }}</div>
                     </div>
             </div>
-    
             <div class="right-poss col-4">
-                <input class="cell form-control" ng-model="selectedEmployee.Name" type="text">
-                <input class="cell form-control" ng-model="selectedEmployee.DateOfBirth" type="text">
-                <input class="cell form-control" ng-model="selectedEmployee.HireDate" type="text">
-                <input class="cell form-control" ng-model="selectedEmployee.JobTitle" type="text">
-                <select class="form-control" ng-options="department.Name for department in departments track by department.$id" ng-model="selectedDepartment"> </select>
+                <form name="editEmployee">
+                <input class="cell form-control" ng-model="selectedEmployee.Name" type="text" required>
+                <input class="cell form-control" ng-model="selectedEmployee.DateOfBirth" type="text" required>
+                <input class="cell form-control" ng-model="selectedEmployee.HireDate" type="text" required>
+                <input class="cell form-control" ng-model="selectedEmployee.JobTitle" type="text" required>
+                <select class="form-control" ng-options="department.Name for department in departments track by department.$id" ng-model="selectedDepartment" required> </select>
+                </form>
             </div>
         </div>
         <div class="center">
-            <button ng-click="UpdateRecord()" class="btn btn-info">Update</button>
+            <button ng-click="UpdateRecord()" ng-disabled="editEmployee.$invalid" class="btn btn-info">Update</button>
         </div>
+
     </div>
