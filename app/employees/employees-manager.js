@@ -35,10 +35,11 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
 
             var department = departmentsList.$getRecord(depId);
             record.Department.Name = department.Name;
-
-            record.Tasks = {"Fake": true};
-            record.Projects = {"Fake": true};
-
+            return department;
+        })
+        .then(function(){
+            record.Tasks = [{"Fake": true}];
+            record.Projects = [{"Fake": true}];
             employees.$add(record).then(function(newRec){
                 var shortEmployee = { "ID" : newRec.key, "Name" : record.Name };
                 employeesHolderManipulation.AddEmployeeToDepartment(shortEmployee, depId, departmentsList);

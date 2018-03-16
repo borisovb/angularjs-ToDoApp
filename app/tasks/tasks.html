@@ -15,71 +15,79 @@
 
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-          <tr>
-            <th>Name</th>
+      <form name="myForm" novalidate>
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
 
-            <th>Description</th>
+              <th>Description</th>
 
-            <th>Importance</th>
+              <th>Importance</th>
 
-            <th>Creation Date</th>
+              <th>Creation Date</th>
 
-            <th>Completion Date</th>
+              <th>Completion Date</th>
 
-            <th>Project</th>
+              <th>Project</th>
 
-            <th>Employee</th>
-        </thead>
+              <th>Employee</th>
+          </thead>
 
-        <tbody>
+          <tbody>
             <tr ng-show="show">
-                <td><input type="text" ng-model="record.Name" class="form-control" placeholder="Title" ng-required="required"></td>
-                <td><input type="text" ng-model="record.Description" class="form-control" placeholder="Description" ng-required="required"></td>
-                <td><input type="text" ng-model="record.Importance" class="form-control" placeholder="Importance" ng-required="required"></td>
-                <td><input type="text" ng-model="record.CreationDate" class="form-control" placeholder="DD.MM.YYYY" ng-required="required"></td>
-                <td><input type="text" ng-model="record.CompletionDate" class="form-control" placeholder="DD.MM.YYYY" ng-required="required"></td>
-                <td> 
-                    <select class="form-control" ng-model="record.Project.ID" >
-                      <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>
-                    </select>
-                </td>
-                
-                <td> 
-                    <select class="form-control" ng-model="record.Employee.ID" >
-                      <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.Name}}</option>
-                    </select>
-                </td>
-      
-                <td class="d-flex justify-content-around aling-stretch" style="border: none">
-    
-                  <button ng-click="AddRecord()" class="btn"><i class="fas fa-plus-square text-success"></i></button>
-                  <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
-                </td>
-                
-              </tr>
-          <tr ng-repeat="task in data">
-            <td>{{task.Name}}</td>
+              <td><input type="text" name="name" class="form-control" ng-model="record.Name" required></td>
+              <td><input type="text" name="desc" class="form-control" ng-model="record.Description" required></td>
+              <td><select name="imp" class="form-control" ng-model="record.Importance" required>
+                <option value="Low">Low</option>
+                <option value="Meduim">Meduim</option>
+                <option value="High">High</option>
+                <option value="Top priority">Top priority</option>
+              </select></td>
+              <!-- <td><input type="text" name="imp" class="form-control" ng-model="record.Importance" required></td> -->
+              <td><md-datepicker ng-model="picker.CreationDate" md-hide-icons="calendar" required></md-datepicker></td>
+              <td><md-datepicker ng-model="picker.CompletionDate" md-hide-icons="calendar" required></md-datepicker></td>
+              <td> 
+                <select class="form-control" ng-model="record.Project.ID" required>
+                  <option ng-repeat="project in projects" value="{{project.$id}}">{{ project.Name }}</option>
+                </select>
+              </td>
+              
+              <td> 
+                <select class="form-control" ng-model="record.Employee.ID" >
+                  <option ng-repeat="employee in employees" value="{{employee.$id}}">{{employee.Name}}</option>
+                </select>
+              </td>
+        
+              <td class="d-flex justify-content-around aling-stretch" style="border: none">
+                <button ng-disabled="myForm.$invalid" ng-click="AddRecord()" class="btn"><i class="fas fa-plus-square text-success"></i></button>
+                <button class="btn"  ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
+              </td>
+            </tr>
 
-            <td>{{task.Description}}</td>
+            <tr ng-repeat="task in data">
+              <td>{{task.Name}}</td>
 
-            <td>{{task.Importance}}</td>
+              <td>{{task.Description}}</td>
 
-            <td>{{task.CreationDate}}</td>
+              <td>{{task.Importance}}</td>
 
-            <td>{{task.CompletionDate}}</td>
+              <td>{{task.CreationDate}}</td>
 
-            <td>{{task.Project.Name}}</td>
+              <td>{{task.CompletionDate}}</td>
 
-            <td>{{task.Employee.Name}}</td>
-            <td class="d-flex justify-content-around aling-stretch" style="border: none">
+              <td>{{task.Project.Name}}</td>
+
+              <td>{{task.Employee.Name}}</td>
+              <td class="d-flex justify-content-around aling-stretch" style="border: none">
                 <a href="#!/task/{{task.$id}}"><i class="far fa-edit text-primary"></i></a>
                 <button class="button-favicon" ng-click="DeleteRecord(task.$id)"><i class="far fa-trash-alt text-danger"></i></button>
               </td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+
+          </tbody>
+        </table>
+      </form>
     </div>
   </div>
 </div>
