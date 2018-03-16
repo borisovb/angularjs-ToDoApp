@@ -4,7 +4,18 @@
         </li>
         <li class="breadcrumb-item active">Employees</li>
       </ol>
-
+<!-- Search -->
+        <form class="form-inline my-2 my-lg-0 mr-lg-2" style="float:right;">
+            <div class="input-group">
+                <input class="form-control" type="text" ng-model='searchBox' placeholder="Search for...">
+                <span class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+            </div>
+        </form>
+<br><br>
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-table"></i> Employees 
@@ -43,7 +54,7 @@
                           <button class="btn" ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button>         
                       </td>
                     </tr>
-                  <tr ng-repeat="employee in data">
+                  <tr ng-repeat="employee in data | filter: searchBox">
                     <td> {{ employee.Name }} </td>
                     <td> {{ employee.DateOfBirth }} </td>
                     <td> {{ employee.HireDate }} </td>

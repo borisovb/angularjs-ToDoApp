@@ -112,6 +112,5 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
         GetEmployeeById : GetEmployeeById,
         AddEmployee : AddEmployee,
         DeleteEmployee : DeleteEmployee,
-        UpdateEmployeeDepartment : UpdateEmployeeDepartment
     }
 })
