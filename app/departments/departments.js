@@ -42,7 +42,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
 
         $scope.delete = function(id) {
             departmentsManager.removeDepartment(id);
-        }        
+        }
 }])
 
 /*.controller('AddDepartmentCtrl', ['$scope', '$firebaseArray', 

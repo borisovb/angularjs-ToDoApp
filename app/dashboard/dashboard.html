@@ -1,23 +1,40 @@
-<table class="container">
-        
-    <div class="heading">Top 3 urgent tasks</div>
+<div class="d-flex">
+    <div class="container-fluid">
 
-    <table>
-        <tr class="center">
-            <th>Name</th>
-            <th>Dedline</th>
-            <th>Employee</th>
-            <th>Project</th>
-        </tr>
-        <tr class="center" ng-repeat="task in tasks">
-            <td class="cell"><a href="#!/task/{{task.$id}}">{{task.Name}}</a></td>
-            <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
-            <td class="cell"><a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a></td>
-            <td class="cell">{{task.Project.Name}}</td>        
-        </tr>
-    </table>
+            <div class="heading">Top 3 urgent tasks</div> 
+            
+
+
+        <tbody>
+            <tr>
+                <td>
+                        <table>
+                                <tr class="center">
+                                    <th>Name</th>
+                                    <th>Deadline</th>
+                                    <th>Employee</th>
+                                    <th>Project</th>
+                                </tr>
+                                <tr class="center" ng-repeat="task in tasks">
+                                    <td class="cell">
+                                        <a href="#!/task/{{task.$id}}">{{task.Name}}</a>
+                                    </td>
+                                    <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
+                                    <td class="cell">
+                                        <a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a>
+                                    </td>
+                                    <td class="cell">{{task.Project.Name}}</td>
+                                </tr>
+                            </table>
+                </td>
+                    
+            </tr>
+            
+        </tbody>
+
+    </div>
 
     <div ng-controller="weatherCtrl">
         <weather></weather>
-    </div>  
-</table>
+    </div>
+</div>
