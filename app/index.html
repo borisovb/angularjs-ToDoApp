@@ -10,14 +10,19 @@
   <meta name="description" content="Web2 TO DO App">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="vendor/sb-admin/sb-admin.css">
+  <link rel="stylesheet" href="vendor/material.css">
+  <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css"/>
+  <link rel="stylesheet" href="app.css">
+
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> //-->
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> //-->
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+
   <!-- <script src="vendor/sb-admin/sb-admin.js"></script> -->
 
 </head>
@@ -39,6 +44,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
 
+    <!-- ngMaterial dependecies -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
     <!-- Firebase/AngularFire -->
   <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
   <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
@@ -59,6 +70,14 @@
   <script src="data-providers/data-provider.js"></script>
   <script src="dashboard/dashboard.js"></script>
   <script src="bower_components/checklist-model/checklist-model.js"></script>
+  <script src="directives/weather.js"></script>
+  <script src="bower_components/ngGeolocation/ngGeolocation.min.js"></script>
 
+  <!--Calendar deps -->
+  <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+  <!-- <script type="text/javascript" src="bower_components/angular/angular.min.js"></script> -->
+  <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
+  <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
 </body>
 </html>

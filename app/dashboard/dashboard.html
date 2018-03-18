@@ -1,12 +1,25 @@
 <table class="container">
+        
     <div class="heading">Top 3 urgent tasks</div>
 
     <table>
-        <tr ng-repeat="task in tasks">
+        <tr class="center">
+            <th>Name</th>
+            <th>Dedline</th>
+            <th>Employee</th>
+            <th>Project</th>
+        </tr>
+        <tr class="center" ng-repeat="task in tasks">
             <td class="cell"><a href="#!/task/{{task.$id}}">{{task.Name}}</a></td>
             <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
             <td class="cell"><a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a></td>
             <td class="cell">{{task.Project.Name}}</td>        
         </tr>
     </table>
-</div>
+
+    <div ng-controller="weatherCtrl">
+        <weather></weather>
+    </div>  
+
+    <div ui-calendar class="span8 calendar" ng-model="eventSources"></div>
+</table>

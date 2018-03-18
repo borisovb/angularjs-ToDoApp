@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.dashboard', ['ngRoute', 'myApp.data'])
+angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui.calendar'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/', {
@@ -19,6 +19,16 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data'])
             return b['CompletionDate'] - a['CompletionDate'];
         });
         loadedTasks.splice(3);
-        $scope.tasks = loadedTasks  ;
-    });
+        $scope.tasks = loadedTasks;
+        return loadedTasks;
+    }).then(function(loadedTasks){
+        var calendarEvents = [];
+        loadedTasks.forEach(task => {
+            calendarEvents.push({title : task.Name, start : new Date(task['CreationDate']), end : new Date(task['CompletionDate'])});
+        });
+
+        $('#calendar').fullCalendar({
+            events: calendarEvents
+        });
+    });    
 });

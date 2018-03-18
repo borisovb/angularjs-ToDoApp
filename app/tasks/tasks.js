@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.tasks', ['ngRoute', 'firebase', 'myApp.tasksManager', 'myApp.data'])
+angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'ngMaterial', 'ngMessages'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/tasks', {
@@ -12,16 +12,18 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase', 'myApp.tasksManager', 'myA
         templateUrl: 'tasks/task-detail.html',
         controller: 'TaskDetailsCtrl'
     });
-
 }])
 
-.controller('TasksCtrl', function($scope, $firebaseArray, tasks, database){
-       
+.controller('TasksCtrl', function($scope, $filter, tasks, database){
+    $scope.isOpen = false;
+
     $scope.data = tasks.GetTasks();
     $scope.projects = database.getCollection("Projects");
     $scope.employees = database.getCollection("Employees");
 
     $scope.AddRecord = function(){
+        $scope.record.CreationDate = $filter('date')($scope.picker.CreationDate, "MM/dd/yyyy");
+        $scope.record.CompletionDate = $filter('date')($scope.picker.CompletionDate, "MM/dd/yyyy");
         tasks.AddTask($scope.record);
     }
 
@@ -30,7 +32,7 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase', 'myApp.tasksManager', 'myA
     }
 })
 
-.controller('TaskDetailsCtrl', function($scope, $firebaseArray, $routeParams, $route, tasks, database){
+.controller('TaskDetailsCtrl', function($scope, $filter, $routeParams, $route, tasks, database){
     var id = $routeParams.id;
 
     $scope.projects = database.getCollection("Projects");
@@ -56,6 +58,9 @@ angular.module('myApp.tasks', ['ngRoute', 'firebase', 'myApp.tasksManager', 'myA
     });
 
     $scope.UpdateRecord = function(){
+        $scope.task.CreationDate = $filter('date')($scope.picker.CreationDate, "MM/dd/yyyy");
+        $scope.task.CompletionDate = $filter('date')($scope.picker.CompletionDate, "MM/dd/yyyy");
+
         var oldProjectId = $scope.task.Project.ID;
         var oldEmployeeId = $scope.task.Employee.ID;
 

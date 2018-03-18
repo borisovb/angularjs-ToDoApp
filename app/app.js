@@ -10,7 +10,9 @@ angular.module('myApp', [
   'myApp.projects',
   'myApp.departments',
   'myApp.employees',
-  'firebase'
+  'ngMaterial', 
+  'ngMessages'
+
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
