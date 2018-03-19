@@ -12,7 +12,6 @@ angular.module('myApp', [
   'myApp.employees',
   'ngMaterial', 
   'ngMessages'
-
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');

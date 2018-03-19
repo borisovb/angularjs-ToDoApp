@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui.calendar'])
+angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar', 'ui.bootstrap'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/', {
@@ -11,6 +11,8 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui
 
 .controller('DashboardCtrl', function($scope, database){
     var tasks = database.getCollection('Tasks');
+    $scope.calendarView = 'month';
+    $scope.viewDate = new Date();
     tasks.$loaded().then(function(loadedTasks){
         loadedTasks.forEach(task => {
             task['CompletionDate'] = new Date(task['CompletionDate']);
@@ -24,11 +26,11 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui
     }).then(function(loadedTasks){
         var calendarEvents = [];
         loadedTasks.forEach(task => {
-            calendarEvents.push({title : task.Name, start : new Date(task['CreationDate']), end : new Date(task['CompletionDate'])});
+            calendarEvents.push({title : task.Name, startsAt : new Date(task['CreationDate']), endsAt : new Date(task['CompletionDate'])});
         });
 
-        $('#calendar').fullCalendar({
-            events: calendarEvents
-        });
-    });    
+        $scope.events = calendarEvents;
+    });  
+    
+
 });
