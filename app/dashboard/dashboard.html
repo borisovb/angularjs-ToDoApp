@@ -1,40 +1,94 @@
-<div class="d-flex">
-    <div class="container-fluid">
+<div class="row">
+    <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-primary o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
 
-            <div class="heading">Top 3 urgent tasks</div> 
-            
+                    <div class="card-body-icon">
+                        <i class="fa fa-sun-o"></i>
+                    </div>
+                </div>
+                <div class="mr-5">
+                    <div class="heading">Weather</div>
+                    <div ng-controller="weatherCtrl">
+                        <weather></weather>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xl-6 col-sm-6 mb-3">
+        <div class="card text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fa fa-fw fa-list"></i>
+                </div>
+                <div class="mr-5">
+                    <div class="heading">Top 3 urgent tasks</div>
+
+                    <table>
+                        <tr class="center">
+                            <th>Name</th>
+                            <th>Deadline</th>
+                            <th>Employee</th>
+                            <th>Project</th>
+                        </tr>
+                        <tr class="center" ng-repeat="task in tasks">
+                            <td class="cell">
+                                <a href="#!/task/{{task.$id}}">{{task.Name}}</a>
+                            </td>
+                            <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
+                            <td class="cell">
+                                <a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a>
+                            </td>
+                            <td class="cell">{{task.Project.Name}}</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fa fa-trophy"></i>
+                </div>
+                <div class="mr-5">
+                    <div class="heading">Most valuable employee</div>
+                    <div style="margin: 0 auto;">
+                    <i class="fa fa-user" aria-hidden="true"></i> {{ mve.Name }} <br> 
+                    <i class="fa fa-tasks" aria-hidden="true"></i> {{ mve.Tasks.length }} tasks
+                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-bell-o"></i> Activity Feed </div>
+    <div class="list-group list-group-flush small">
+        <a class="list-group-item list-group-item-action" href="#">
+            <div class="media">
+                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
+                <div class="media-body">
+                    <strong>David Miller</strong>posted a new article to
+                    <strong>David Miller Website</strong>.
+                    <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
+                </div>
+            </div>
+        </a>
 
 
-        <tbody>
-            <tr>
-                <td>
-                        <table>
-                                <tr class="center">
-                                    <th>Name</th>
-                                    <th>Deadline</th>
-                                    <th>Employee</th>
-                                    <th>Project</th>
-                                </tr>
-                                <tr class="center" ng-repeat="task in tasks">
-                                    <td class="cell">
-                                        <a href="#!/task/{{task.$id}}">{{task.Name}}</a>
-                                    </td>
-                                    <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
-                                    <td class="cell">
-                                        <a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a>
-                                    </td>
-                                    <td class="cell">{{task.Project.Name}}</td>
-                                </tr>
-                            </table>
-                </td>
-                    
-            </tr>
-            
-        </tbody>
+
 
     </div>
 
-    <div ng-controller="weatherCtrl">
-        <weather></weather>
-    </div>
 </div>
