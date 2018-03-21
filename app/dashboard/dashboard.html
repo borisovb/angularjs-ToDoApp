@@ -5,7 +5,7 @@
                 <div class="card-body-icon">
 
                     <div class="card-body-icon">
-                        <i class="fa fa-sun-o"></i>
+                            <i class="fas fa-sun"></i>
                     </div>
                 </div>
                 <div class="mr-5">
@@ -73,22 +73,19 @@
 
 <div class="card mb-3">
     <div class="card-header">
-        <i class="fa fa-bell-o"></i> Activity Feed </div>
+            <i class="fas fa-thumbtack"></i> Activity Feed </div>
     <div class="list-group list-group-flush small">
-        <a class="list-group-item list-group-item-action" href="#">
+        <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | limitTo: activityLimit">
             <div class="media">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
                 <div class="media-body">
-                    <strong>David Miller</strong>posted a new article to
-                    <strong>David Miller Website</strong>.
-                    <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
+                    {{ activity.Message }}
+                    <div class="text-muted smaller"> {{ activity.DateTime }}</div>
                 </div>
             </div>
         </a>
-
-
-
+        <button class="list-group-item list-group-item-action" ng-click="activityLoadMore()">Load more...</button>
 
     </div>
+
 
 </div>

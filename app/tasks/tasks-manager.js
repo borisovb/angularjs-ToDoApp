@@ -1,7 +1,7 @@
 'use strict'
-angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
+angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders', 'myApp.activity'])
 
-.factory('tasks', function(database, taskHolderManipulation){
+.factory('tasks', function(database, taskHolderManipulation, activityManager){
 
     var tasks;
     var projects;
@@ -46,6 +46,7 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
                 var shortTask = {"ID": newRec.key, "Name" : record.Name};
                 taskHolderManipulation.AddTaskToHolder(shortTask, values[0], projects);
                 taskHolderManipulation.AddTaskToHolder(shortTask, values[1], employees);
+                activityManager.NewActivity("create", "Task", record.Name);
             });
         });
     }
@@ -64,6 +65,7 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
             });
 
             Promise.all([projectsPromise, employeesPromise]).then(function(){
+                activityManager.NewActivity("delete", "Task", task.Name);
                 loadedTasks.$remove(task);
             })
         })
@@ -101,6 +103,7 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
         });
         
         Promise.all([projectsPromise, employeesPromise]).then(function(){
+            activityManager.NewActivity("update", "Task", updatedRecord.Name);
             tasks.$save(updatedRecord);
         });
         

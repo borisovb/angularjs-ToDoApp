@@ -13,6 +13,13 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather'])
     var tasks = database.getCollection('Tasks');
     var employees = database.getCollection('Employees');
     var activity = database.getCollection('Activity');
+    $scope.activities = activity;
+    $scope.activityLimit = 3;
+
+    $scope.activityLoadMore = function activityLoadMore(){
+        $scope.activityLimit = $scope.activityLimit + 3;
+    }   
+
     tasks.$loaded().then(function(loadedTasks){
         loadedTasks.forEach(task => {
             task['CompletionDate'] = new Date(task['CompletionDate']);
