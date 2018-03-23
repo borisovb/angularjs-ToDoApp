@@ -14,15 +14,12 @@ angular.module('myApp.weatherProvider', ['ngGeolocation'])
             function getGeoLocationPromise() {
                 if (angular.isUndefined(locationPromise)) {
                     var locationDefered = $q.defer();
-                    $geolocation.getCurrentPosition({
-                        enableHighAccuracy: true
-                    })
+                    $http.get('http://extreme-ip-lookup.com/json')
                         .then(function (response) {
-                            var coordinates = response.coords;
+                            var coordinates = response.data;
                             locationDefered.resolve(coordinates);
-                            
                         }, function (error) {
-                            console.log("Error" + error);
+                            console.log("Error!");
                         })
                         locationPromise = locationDefered.promise;
                 }
@@ -37,8 +34,9 @@ angular.module('myApp.weatherProvider', ['ngGeolocation'])
                     var weatherData = {};
                     var apiKey = '6719378f816008e9df61a4ba4321afa2';
 
-                    var lat = coordinates.latitude;
-                    var long = coordinates.longitude;
+                    var lat = coordinates.lat;
+                    var long = coordinates.lon;
+                    console.log(lat + ", " + long);
 
 
                     $http.get('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + long +

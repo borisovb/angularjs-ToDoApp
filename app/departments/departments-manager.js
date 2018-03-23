@@ -3,7 +3,7 @@
 angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.departments.holders', 'myApp.activity'])
 
 .factory('departmentsManager', ['database', 'departmentHolderManipulation', '$window', 'activityManager', 
-    function(database, holderManipulation, $window, activityManager) {
+    function(database, departmentHolderManipulation, $window, activityManager) {
     var departments;
     var employees;
     var projects;
@@ -39,7 +39,7 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
                 $window.alert('Successfully added "' + depName + '" to Departments!"');
             })
             .catch(function(error) {
-                $window.alert('Could not add the department. Error: ' + error);
+                $window.alert('Could not add the department. ' + error);
             })
     }
 
@@ -55,10 +55,10 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
                     $window.alert('Successfully removed "' + delDepartment.Name + '" from Departments!"');
                 })
                 .catch(function(error) {
-                    $window.alert('Could not delete the department. Error: ' + error);
+                    $window.alert('Could not delete the department. ' + error);
                 });
         } else {
-            $window.aler("Please remove all employees and projects before deletion!");
+            $window.alert("Please remove all employees and projects before deletion!");
         }   
     }
 
@@ -69,12 +69,34 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
         
         departments.$save(editDepartment)
         .then(function(department) {
-            var newName = departments.$getRecord(department.key).Name;
+            var editedDepartment = departments.$getRecord(department.key);
+            var newName = editedDepartment.Name;
+            
+            employees = SaveLoadEmployees();
+            projects = SaveLoadProjects();
+
+            Promise.all([employees, projects]).then(function(collections) {
+                for(var emp in editedDepartment.Employees) {
+                    var holder = collections[0].$getRecord(editedDepartment.Employees[emp].ID);
+                    var holderDepartment = {
+                        ID: editedDepartment.$id,
+                        Name: editedDepartment.Name
+                    }
+                    departmentHolderManipulation.addDepartmentToHolder(holderDepartment, holder, collections[0]);
+                }
+                for(var proj in editedDepartment.Projects) {
+                    var holder = collections[1].$getRecord(editedDepartment.Projects[proj].ID);
+                    var holderDepartment = {
+                        ID: editedDepartment.$id,
+                        Name: editedDepartment.Name
+                    }
+                    departmentHolderManipulation.addDepartmentToHolder(holderDepartment, holder, collections[1]);
+                }
+            })
             activityManager.NewActivity("update", "Department", newName);
             $window.alert('Successfully changed "' + oldName + '"' + ' to ' + '"' + newName + '"');
-        })
-        .catch(function(error) {
-            $window.alert('Could not rename department. Error: ' + error);
+        }, function(error) {
+            $window.alert('Could not rename department. ' + error);
         });
     }
 
@@ -87,17 +109,17 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
 
     function SaveLoadProjects(){
         if (projects === undefined) {
-            projects = database.getCollection('Projects');
+            projects = database.getCollection('Projects').$loaded();
         }
-        return projects.$loaded();
+        return projects;
     }
 
     function SaveLoadEmployees(){
         if  (employees === undefined){
-            employees = database.getCollection('Employees');
+            employees = database.getCollection('Employees').$loaded();
         }
 
-        return employees.$loaded();
+        return employees;
     }
 
     return {

@@ -1,0 +1,17 @@
+<div class="container-fluid">
+        <div>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Departments</a></li>
+                <li class="breadcrumb-item active">{{department.Name}}</li>
+            </ol>
+            <div class="card mb-3">
+                <div class="card-header">Projects</div>
+                <div class="list-group">
+                    <a href="#!/projects/edit/{{project.ID}}" class="list-group-item list-group-item-action" ng-repeat="project in projects">
+                        <div class="">{{project.Name}}</div>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
