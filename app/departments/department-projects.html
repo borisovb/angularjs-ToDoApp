@@ -1,17 +1,23 @@
 <div class="container-fluid">
-        <div>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Departments</a></li>
-                <li class="breadcrumb-item active">{{department.Name}}</li>
-            </ol>
-            <div class="card mb-3">
-                <div class="card-header">Projects</div>
-                <div class="list-group">
-                    <a href="#!/projects/edit/{{project.ID}}" class="list-group-item list-group-item-action" ng-repeat="project in projects">
-                        <div class="">{{project.Name}}</div>
-                    </a>
-                </div>
+    <div>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#!/Dashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#!/departments">Departments</a>
+            </li>
+            <li class="breadcrumb-item active">{{department.Name}}</li>
+        </ol>
+        <div class="card mb-3">
+            <div class="card-header"><i class="fas fa-book"></i> Projects</div>
+            <div class="list-group">
+                <a ng-show="!projects[0].Fake" href="#!/projects/edit/{{project.ID}}" class="list-group-item list-group-item-action" ng-repeat="project in projects">
+                    <div>{{project.Name}}</div>
+                </a>
+                <div class="list-group-item" ng-show="projects[0].Fake">No projects added yet!</div>
             </div>
-            
         </div>
+
     </div>
+</div>

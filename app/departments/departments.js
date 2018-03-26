@@ -124,7 +124,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
         depList.$loaded().then(function(depList) {
             $scope.department = depList.$getRecord($routeParams.id);
             $scope.employees = $scope.department.Employees;
-            $scope.projects = projList;
+            $scope.projects = $scope.department.Projects;
 
             $scope.record.Name = $scope.department.Name;
             for(var i = 0; i < $scope.department.Employees.length; i++) {
@@ -170,13 +170,6 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
                     console.log(emp);
                     console.log(empList.$getRecord(emp))
                 }
-                /*depList.$save($scope.department).then(function(newRec) {
-                    for(var emp in newRec.Employees) {
-                        for(var ofAllEmp in empList) {
-                            if(emp.)
-                        }
-                    }
-                })*/
             }
         })
         

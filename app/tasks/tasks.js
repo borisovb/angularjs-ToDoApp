@@ -15,8 +15,6 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
 }])
 
 .controller('TasksCtrl', function($scope, $filter, tasks, database){
-    $scope.isOpen = false;
-
     $scope.data = tasks.GetTasks();
     $scope.projects = database.getCollection("Projects");
     $scope.employees = database.getCollection("Employees");
