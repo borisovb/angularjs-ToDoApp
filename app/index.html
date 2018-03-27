@@ -27,13 +27,15 @@
 
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" ng-cloak>
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
   <div ng-include src="'includes/nav.html'"></div>
   <div class="content-wrapper">
+      <div id="loading-bar-container"></div>
+
     <div ng-view class="container-fluid">
     </div>
   </div>
@@ -57,27 +59,25 @@
 
   <!-- Components -->
   <script src="app.js"></script>
+  <script src="data-providers/data-provider.js"></script>
+  <script src="activity-manager/activity-manager.js"></script>
+  <script src="dashboard/dashboard.js"></script>
   <script src="tasks/tasks.js"></script>
   <script src="tasks/holder-tasks-manager.js"></script>
   <script src="tasks/tasks-manager.js"></script>
   <script src="projects/projects.js"></script>
+  <script src="projects/projects-manager.js"></script>
+  <script src="projects/holder-project-manager.js"></script>
   <script src="departments/departments.js"></script>
   <script src="departments/holder-departments-manager.js"></script>
   <script src="departments/departments-manager.js"></script>
   <script src="employees/holder-employee-manager.js"></script>
   <script src="employees/employees-manager.js"></script>
   <script src="employees/employees.js"></script>
-  <script src="data-providers/data-provider.js"></script>
-  <script src="dashboard/dashboard.js"></script>
   <script src="bower_components/checklist-model/checklist-model.js"></script>
   <script src="directives/weather.js"></script>
   <script src="bower_components/ngGeolocation/ngGeolocation.min.js"></script>
 
-  <!--Calendar deps -->
-  <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
-  <!-- <script type="text/javascript" src="bower_components/angular/angular.min.js"></script> -->
-  <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
-  <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-  <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
+  <script src="directives/weather-provider.js"></script>
 </body>
 </html>

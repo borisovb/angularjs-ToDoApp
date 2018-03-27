@@ -1,9 +1,9 @@
 'use strict'
 
-angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.departments.holders'])
+angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.departments.holders', 'myApp.activity'])
 
-.factory('departmentsManager', ['database', 'departmentHolderManipulation', '$window', 
-    function(database, holderManipulation, $window) {
+.factory('departmentsManager', ['database', 'departmentHolderManipulation', '$window', 'activityManager', 
+    function(database, holderManipulation, $window, activityManager) {
     var departments;
     var employees;
     var projects;
@@ -35,6 +35,7 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
 
         departments.$add(record).then(function(department) {
                 var depName = departments.$getRecord(department.key).Name;
+                activityManager.NewActivity("create", "Department", depName);
                 $window.alert('Successfully added "' + depName + '" to Departments!"');
             })
             .catch(function(error) {
@@ -50,6 +51,7 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
                 || (delDepartment.Employees[0].Fake && delDepartment.Projects[0].Fake)) {
             departments.$remove(delDepartment)
                 .then(function(department) {
+                    activityManager.NewActivity("delete", "Department", delDepartment.Name);
                     $window.alert('Successfully removed "' + delDepartment.Name + '" from Departments!"');
                 })
                 .catch(function(error) {
@@ -68,6 +70,7 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
         departments.$save(editDepartment)
         .then(function(department) {
             var newName = departments.$getRecord(department.key).Name;
+            activityManager.NewActivity("update", "Department", newName);
             $window.alert('Successfully changed "' + oldName + '"' + ' to ' + '"' + newName + '"');
         })
         .catch(function(error) {

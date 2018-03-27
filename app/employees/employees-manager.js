@@ -1,7 +1,7 @@
 'use strict';
-angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders'])
+angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders', 'myApp.activity'])
 
-.factory('employeesManager', function(database, employeesHolderManipulation){
+.factory('employeesManager', function(database, employeesHolderManipulation, activityManager){
 
     var tasks;
     var projects;
@@ -43,6 +43,7 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
             employees.$add(record).then(function(newRec){
                 var shortEmployee = { "ID" : newRec.key, "Name" : record.Name };
                 employeesHolderManipulation.AddEmployeeToDepartment(shortEmployee, depId, departmentsList);
+                activityManager.NewActivity("create", "Employee", record.Name);
                 alert(record.Name + " is added successfully!");
             });
         });
@@ -69,9 +70,10 @@ angular.module('myApp.employeesManager', ['myApp.data', 'myApp.employees.holders
                     SaveLoadDepartments().then(function(loadedDepartments){
                         employeesHolderManipulation.RemoveEmployeeFromDepartments(departmentId, recordID, loadedDepartments);
                     })
+                    activityManager.NewActivity("delete", "Employee", employee.Name);
                     loadedEmployees.$remove(employee);
                 } else {
-                    alert("You can not delete employee with assigned task/s.")
+                    alert("You can not delete employee with assigned task/s.");
                 }
             }
         })

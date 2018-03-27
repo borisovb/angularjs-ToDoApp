@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui.calendar'])
+angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/', {
@@ -11,6 +11,15 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui
 
 .controller('DashboardCtrl', function($scope, database){
     var tasks = database.getCollection('Tasks');
+    var employees = database.getCollection('Employees');
+    var activity = database.getCollection('Activity');
+    $scope.activities = activity;
+    $scope.activityLimit = 3;
+
+    $scope.activityLoadMore = function activityLoadMore(){
+        $scope.activityLimit = $scope.activityLimit + 3;
+    }   
+
     tasks.$loaded().then(function(loadedTasks){
         loadedTasks.forEach(task => {
             task['CompletionDate'] = new Date(task['CompletionDate']);
@@ -20,15 +29,17 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'ui
         });
         loadedTasks.splice(3);
         $scope.tasks = loadedTasks;
-        return loadedTasks;
-    }).then(function(loadedTasks){
-        var calendarEvents = [];
-        loadedTasks.forEach(task => {
-            calendarEvents.push({title : task.Name, start : new Date(task['CreationDate']), end : new Date(task['CompletionDate'])});
-        });
+    })
 
-        $('#calendar').fullCalendar({
-            events: calendarEvents
-        });
-    });    
+    employees.$loaded().then(function(loadedEmployees){
+
+        for (let i = 0; i < loadedEmployees.length; i++) {
+
+            if(loadedEmployees[i].Tasks.length > loadedEmployees[i+1].Tasks.length){
+                $scope.mve = loadedEmployees[i];
+            }
+        }
+    })
+    
+
 });

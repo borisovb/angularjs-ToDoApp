@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.employees.holders'])
+angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.employees.holders', 'myApp.activity'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/employees', {
@@ -23,11 +23,13 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     var depList = database.getCollection("Departments");
     var projectsList = database.getCollection("Projects");
     var tasksList = database.getCollection("Tasks");
+    var activity = database.getCollection('Activity');
 
     $scope.data = employeesManager.GetEmployees();
     $scope.departments = depList;
     $scope.projects = projectsList;
     $scope.tasks = tasksList;
+    $scope.activity = activity;
 
     $scope.AddRecord = function(){
         employeesManager.AddEmployee($scope.record);
@@ -35,8 +37,8 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
         $scope.show = false;
     };
 
-    $scope.DeleteRecord = function(recId){
-        employeesManager.DeleteEmployee(recId);
+    $scope.DeleteRecord = function(recId, recName){
+            employeesManager.DeleteEmployee(recId)
     };
 })
 
@@ -49,7 +51,7 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     })
 })
 
-.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesHolderManipulation){
+.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesHolderManipulation, activityManager){
     var empId = $routeParams.id;
 
     var empList = database.getCollection("Employees");
@@ -85,6 +87,7 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
             $route.reload();
             alert('Employee updated!');
         });
+        activityManager.NewActivity("update", "Employee", currentRecord.Name);
     };
 
 

@@ -5,6 +5,7 @@ angular.module('myApp', [
   'ngRoute',
   'firebase',
   'myApp.data',
+  'myApp.activity',
   'myApp.dashboard',
   'myApp.tasks',
   'myApp.projects',
@@ -16,6 +17,5 @@ angular.module('myApp', [
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
-
   $routeProvider.otherwise({redirectTo: '/'});
 }]);
