@@ -5,7 +5,7 @@
                 <div class="card-body-icon">
 
                     <div class="card-body-icon">
-                            <i class="fas fa-sun"></i>
+                        <i class="fas fa-sun"></i>
                     </div>
                 </div>
                 <div class="mr-5">
@@ -61,9 +61,10 @@
                 <div class="mr-5">
                     <div class="heading">Most valuable employee</div>
                     <div style="margin: 0 auto;">
-                    <i class="fa fa-user" aria-hidden="true"></i> {{ mve.Name }} <br> 
-                    <i class="fa fa-tasks" aria-hidden="true"></i> {{ mve.Tasks.length }} tasks
-                </div>
+                        <i class="fa fa-user" aria-hidden="true"></i> {{ mve.Name }}
+                        <br>
+                        <i class="fa fa-tasks" aria-hidden="true"></i> {{ mve.Tasks.length }} tasks
+                    </div>
                 </div>
             </div>
 
@@ -71,9 +72,10 @@
     </div>
 </div>
 
+
 <div class="card mb-3">
     <div class="card-header">
-            <i class="fas fa-thumbtack"></i> Activity Feed </div>
+        <i class="fas fa-thumbtack"></i> Activity Feed </div>
     <div class="list-group list-group-flush small">
         <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | limitTo: activityLimit | orderBy:'-'">
             <div class="media">
@@ -86,6 +88,15 @@
         <button class="list-group-item list-group-item-action" ng-click="activityLoadMore()">Load more...</button>
 
     </div>
+</div>
 
+<div class="card">
+
+    <div class="card-header text-center">{{ calendarTitle }}</div>
+    <mwl-calendar class="col-12" view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-click="eventClicked(calendarEvent)"
+        on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="false">
+    </mwl-calendar>
 
 </div>
+
+

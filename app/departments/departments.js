@@ -7,13 +7,13 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
         controller: 'DepartmentsCtrl'
     });
 
-    /*$routeProvider.when('/departments/department-add', {
-        templateUrl: 'departments/department-add.html',
-        controller: 'AddDepartmentCtrl'
-    });*/
+    $routeProvider.when('/departments/department-employees/:id', {
+        templateUrl: 'departments/department-employees.html',
+        controller: 'DepartmentDetailsCtrl'
+    });
 
-    $routeProvider.when('/departments/department-details/:id', {
-        templateUrl: 'departments/department-details.html',
+    $routeProvider.when('/departments/department-projects/:id', {
+        templateUrl: 'departments/department-projects.html',
         controller: 'DepartmentDetailsCtrl'
     });
 }])
@@ -104,7 +104,7 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
         };
 }]);*/
 
-/*.controller('DepartmentDetailsCtrl', ['$scope', '$firebaseArray', '$routeParams', 
+.controller('DepartmentDetailsCtrl', ['$scope', '$firebaseArray', '$routeParams', 
     function($scope, $firebaseArray, $routeParams) {
         var ref = firebase.database().ref();
         var depRef = ref.child('Departments');
@@ -123,10 +123,8 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
 
         depList.$loaded().then(function(depList) {
             $scope.department = depList.$getRecord($routeParams.id);
-            $scope.employees = empList;
+            $scope.employees = $scope.department.Employees;
             $scope.projects = projList;
-
-            console.log($scope.department.Employees);
 
             $scope.record.Name = $scope.department.Name;
             for(var i = 0; i < $scope.department.Employees.length; i++) {
@@ -178,9 +176,9 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
                             if(emp.)
                         }
                     }
-                })
+                })*/
             }
         })
         
         
-}])*/
+}])

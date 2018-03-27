@@ -25,6 +25,7 @@
 
   <div class="card-body">
     <div class="table-responsive">
+        
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
@@ -34,37 +35,41 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-show="showAdd">
-            <td><input type="text" class="form-control" placeholder="Name..." ng-model="record.Name" ng-required="required"></td>
-            <td><a href="#!/employees">Add...</a></td>
-            <td><a href="#!/projects">Add...</a></td>
-
-            <td class="d-flex justify-content-around aling-stretch" style="border: none">
-
-              <button class="btn" ng-click="add(record); showAdd=false"><i class="fas fa-plus-square text-success"></i></button>
-              <button class="btn" ng-click="showAdd=false"><i class="fas fa-times text-danger"></i></button>
-            </td>
+            
+              <tr ng-form="addDepartment" ng-show="showAdd" novalidate>
+                  <td><input type="text" class="form-control" placeholder="Name..." ng-model="record.Name" required></td>
+                  <td><a href="#!/employees"></a></td>
+                  <td><a href="#!/projects"></a></td>
+      
+                  <td class="d-flex justify-content-around" style="border: none">
+      
+                    <button class="btn" ng-disabled="addDepartment.$invalid" ng-click="add(record); showAdd=false">
+                      <i class="fas fa-plus-square text-success"></i>
+                    </button>
+                    <button class="btn" ng-click="showAdd=false"><i class="fas fa-times text-danger"></i></button>
+                  </td>
+           
+          
             
           </tr>
-          <tr ng-repeat="department in data | filter: searchBox">
-              <td><div class="d-flex"><div class="mr-auto" ng-hide="show">{{department.Name}}</div>
-                <input type="text" class="form-control mr-2" ng-value="department.Name" ng-model="record.newName" ng-show="show">
-
-                <div ng-hide="show" class="ml-auto">
-                  <button class="btn" ng-click="show=!show"><i class="far fa-edit text-primary"></i></button>
+          
+          <tr ng-form="editName" ng-repeat="department in data | filter: searchBox" novalidate>
+            
+                <td><div class="d-flex"><div class="mr-auto" ng-hide="show">{{department.Name}}</div>
+                  <input type="text" class="form-control mr-2" ng-value="department.Name" ng-model="record.newName" ng-show="show" required>
+                  <div ng-hide="show" class="ml-auto">
+                    <button class="btn" ng-click="show=!show"><i class="far fa-edit text-primary"></i></button>
+                  </div>
+                  <div class="d-flex justify-items-around" ng-show="show">
+                    <button class="btn" ng-disabled="editName.$invalid" ng-click="show=!show; update(record.newName, department.$id)"><i class="fas fa-check text-success"></i></button>
+                    <button class="btn" ng-click="show=!show;"><i class="fas fa-times text-danger"></i></button>
+                  </div>
                 </div>
-                <div class="d-flex justify-items-around" ng-show="show">
-                  <button class="btn" ng-click="show=!show; update(record.newName, department.$id)"><i class="fas fa-check text-success"></i></button>
-                  <button class="btn" ng-click="show=!show;"><i class="fas fa-times text-danger"></i></button>
-                </div>
-              </div>
-                  
-                <!--<a style="margin-right: 0" href="#!/departments/department-details/{{department.$id}}">
-                  
-                </a>-->
-              </td>
-              <td>Employees</td>
-              <td>Projects</td>
+                </td>
+            
+              
+              <td><a href="#!/departments/department-employees/{{department.$id}}">Employees...</a></td>
+              <td><a href="#!/departments/department-projects/{{department.$id}}">Projects...</a></td></td>
               <td class="d-flex justify-content-around aling-stretch" style="border: none">
                 
                 <button class="btn" ng-click="delete(department.$id)"><i class="far fa-trash-alt text-danger" ></i></button> 
@@ -72,6 +77,7 @@
             </tr>
         </tbody>
       </table>
+    
     </div>
   </div>
 </div>
