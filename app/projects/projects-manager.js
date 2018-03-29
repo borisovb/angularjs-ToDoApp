@@ -1,5 +1,5 @@
 'use strict'
-angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.projects.holders'])
+angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.projects.holders', ])
 
 .factory('projects', function(database, projectHolderManipulation, $window){
 
@@ -79,6 +79,20 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
         
     }
 
+    function addEmployeeToProject(project, employee){
+        var shortProject = { "ID" : project.$id, "Name" : project.Name }
+        var shortEmployee = { "ID" : employee.$id, "Name" : employee.Name }
+
+        SaveLoadEmplyees().then(function(loadedEmployees){
+            projectHolderManipulation.addProjectToHolder(shortProject, employee, loadedEmployees);
+        });
+
+        SaveLoadProjects().then(function(loadedProjects){
+            project.Employees.push(shortEmployee);
+            loadedProjects.$save(project);
+        });
+    }
+
     function SaveLoadProjects(){
         if (projects === undefined) {
             projects = database.getCollection("Projects");
@@ -108,6 +122,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
         getProjectById : getProjectById,
         addRecord : addRecord,
         deleteRecord : deleteRecord,
-        updateProject : updateProject
+        updateProject : updateProject,
+        addEmployeeToProject : addEmployeeToProject
     }
 });

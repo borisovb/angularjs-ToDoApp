@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="heading">Update project</div>
+    <div class="flex flex-row content-holder">
+        <div class="col-3">
+            <div class="cell">Name</div>
+            <div class="cell">Description</div>
+            <div class="cell">Department</div>
+            <div class="cell">Creation Date</div>
+            <div class="cell">Completion Date</div>
+        </div>
+
+        <div class="col-4">
+            <div class="cell">{{project.Name}}</div>
+            <div class="cell">{{project.Description}}</div>    
+            <div class="cell">{{project.Department.Name}}</div>    
+            <div class="cell">{{project.CreationDate}}</div>    
+            <div class="cell">{{project.CompletionDate}}</div>    
+        </div>
+
+    </div>
+    <div class="flex flex-row content-holder">
+        <div class="col-4">
+            <div ng-repeat="emp in project.Employees">{{emp.Name}}</div>
+        </div>
+        <div class="col-4">
+            <div ng-repeat="emp in excludedEmployees">{{emp.Name}}</div>
+        </div>
+    </div>
+</div>

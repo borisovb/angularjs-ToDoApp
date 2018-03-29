@@ -7,11 +7,15 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
         controller: 'ProjectsCtrl'
     });
 
+    $routeProvider.when('/project/:id/employees', {
+        templateUrl: 'projects/project-employees.html',
+        controller: 'ProjectEmployeesCtrl'
+    });
+
     $routeProvider.when('/project/:id', {
         templateUrl: 'projects/project-details.html',
         controller: 'ProjectDetailsCtrl'
     });
-
 }])
 
 .controller('ProjectsCtrl', function($scope, $filter, database, projects){
@@ -59,4 +63,22 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
 
         $route.reload()
     }
+})
+
+.controller('ProjectEmployeesCtrl', function($scope, $routeParams, $route, projects, database){
+    var id = $routeParams.id;
+
+    projects.getProjectById(id).then(function(project){
+        $scope.project = project
+        
+        database.getCollection('Employees').$loaded().then(function(loadedEmployees){
+            $scope.excludedEmployees =  loadedEmployees.filter(emp => NotInProject(project, emp.$id));
+        });
+
+    });
+
+    function NotInProject(project, empID){
+        return !project.Employees.some(emp => emp.ID == empID);
+    }
+
 });
