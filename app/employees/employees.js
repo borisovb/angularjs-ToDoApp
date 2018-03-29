@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.employees.holders', 'myApp.activity'])
+angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.employees.holders', 'myApp.activity', 'ngMaterial', 'ngMessages'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/employees', {
@@ -18,7 +18,7 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
 
 }])
 
-.controller('EmployeesCtrl', function($scope, database, employeesManager){
+.controller('EmployeesCtrl', function($scope, $filter, database, employeesManager){
     var empList = database.getCollection("Employees");
     var depList = database.getCollection("Departments");
     var projectsList = database.getCollection("Projects");
@@ -32,6 +32,8 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     $scope.activity = activity;
 
     $scope.AddRecord = function(){
+        $scope.record.DateOfBirth = $filter('date')($scope.picker.DateOfBirth, "MM/dd/yyyy");
+        $scope.record.HireDate = $filter('date')($scope.picker.HireDate, "MM/dd/yyyy");
         employeesManager.AddEmployee($scope.record);
         $scope.record = {};
         $scope.show = false;
@@ -42,12 +44,12 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     };
 })
 
-.controller('EmployeeDetailsCtrl', function($scope, database, $routeParams, $route){
+.controller('EmployeeDetailsCtrl', function($scope, database, $routeParams, $route, employeesManager){
     var empId = $routeParams.id;
-    var empList = database.getCollection("Employees");
+    $scope.employee = employeesManager.GetEmployeeById(empId);
 
-    empList.$loaded().then(function(x){
-        $scope.employee = x.$getRecord(empId);
+    employeesManager.GetEmployeeById(empId).then(function(result){
+        $scope.employee = result;
     })
 })
 
@@ -77,12 +79,12 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     $scope.UpdateRecord = function UpdateRecord (){
 
         if (currentRecord.Department.ID != $scope.selectedDepartment.$id) {
-            employeesHolderManipulation.RemoveEmployeeFromDepartments(currentRecord.Department.ID, currentRecord.$id, depList);
             currentRecord.Department.ID = $scope.selectedDepartment.$id;
             currentRecord.Department.Name = $scope.selectedDepartment.Name;
         }
         empList.$save(currentRecord).then(function(newRec){
             var shortEmployee = { "ID" : newRec.key, "Name" : currentRecord.Name };
+            employeesHolderManipulation.RemoveEmployeeFromDepartments(currentRecord.Department.ID, newRec.key, depList);
             employeesHolderManipulation.AddEmployeeToDepartment(shortEmployee, $scope.selectedDepartment.$id, depList);
             $route.reload();
             alert('Employee updated!');
