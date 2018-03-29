@@ -9,18 +9,24 @@
   <div class="input-group">
     <input class="form-control" type="text" ng-model='searchBox' placeholder="Search for...">
     <span class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </span>
+      <button class="btn btn-primary" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
   </div>
-</form><br><br>
+</form>
+
+<br><br>
 
 <div class="card mb-3">
   <div class="card-header">
-    <i class="fa fa-table"></i>Projects</div>
+    <i class="fa fa-table"></i>
+    Projects
+    <button type="button" class="btn btn-success" style="float: right" ng-click="show=true">Add</button>
+  </div>
   <div class="card-body">
     <div class="table-responsive">
+      <form name="myForm">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
@@ -33,16 +39,43 @@
             <th>Completion date</th>
           </tr>
         </thead>
-        <tbody ng-repeat="project in data | filter: searchBox">
-          <td>{{project.Name}}</td>
-          <td>{{project.Description}}</td>
-          <td>{{project.Department.Name}}</td>
-          <td>Employees</td>
-          <td>Tasks</td>
-          <td>{{project.CreationDate}} </td>
-          <td>{{project.CompletionDate}}</td>
+        <tbody>
+          <!-- Add new peoject form-->
+          <tr ng-show="show">
+            <td><input type="text" name="name" class="form-control" ng-model="record.Name" required></td>
+            <td><input type="text" name="desc" class="form-control" ng-model="record.Description" required></td>
+            <td>
+              <select class="form-control" ng-model="record.Department.ID" required>
+                <option ng-repeat="department in departments" value="{{ department.$id }}"> {{ department.Name }}</option>
+              </select>
+            </td>
+            <td>Add later</td>
+            <td>Add later</td>
+            <td><md-datepicker ng-model="picker.CreationDate" md-hide-icons="calendar" required></md-datepicker></td>
+            <td><md-datepicker ng-model="picker.CompletionDate" md-hide-icons="calendar" md-min-date="picker.CreationDate" required></md-datepicker></td>
+                      
+            <td class="d-flex justify-content-around aling-stretch" style="border: none">
+              <button ng-disabled="myForm.$invalid" ng-click="AddRecord()" class="btn"><i class="fas fa-plus-square text-success"></i></button>
+              <button class="btn"  ng-click="show=false"><i class="far fa-trash-alt text-danger" ></i></button> 
+            </td>
+          </tr>
+
+          <tr ng-repeat="project in data | filter: searchBox">
+            <td>{{project.Name}}</td>
+            <td>{{project.Description}}</td>
+            <td>{{project.Department.Name}}</td>
+            <td>Employees</td>
+            <td>Tasks</td>
+            <td>{{project.CreationDate}} </td>
+            <td>{{project.CompletionDate}}</td>
+            <td class="d-flex justify-content-around aling-stretch" style="border: none">
+                <a href="#!/project/{{project.$id}}"><i class="far fa-edit text-primary"></i></a>
+                <button class="button-favicon" ng-click="DeleteRecord(project.$id)"><i class="far fa-trash-alt text-danger"></i></button>
+            </td>
+          </tr>
         </tbody>
       </table>
+    </form>
     </div>
   </div>
 </div>

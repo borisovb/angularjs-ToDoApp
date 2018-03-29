@@ -81,7 +81,6 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders', 'myAp
     
                 var newProject = loadedProjects.$getRecord(updatedRecord.Project.ID);
                 updatedRecord.Project.Name = newProject.Name;
-    
                 taskHolderManipulation.AddTaskToHolder(shortTask, newProject, loadedProjects);
             } else {
                 //Handle task name update in the holder
@@ -95,7 +94,6 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders', 'myAp
     
                 var newEmployee = loadedEmployees.$getRecord(updatedRecord.Employee.ID);
                 updatedRecord.Employee.Name = newEmployee.Name;
-    
                 taskHolderManipulation.AddTaskToHolder(shortTask, newEmployee, loadedEmployees);
             } else {
                 //Handle task name update in the holder
