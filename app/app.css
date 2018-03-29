@@ -177,4 +177,16 @@ table {
   margin: 0 auto;
 }
 
- 
+.pull-right {
+  position: absolute;
+  right: 0;
+  pointer-events: none;
+}
+
+.clear-pad {
+  padding: 0;
+}
+
+.fit-content {
+  display: inline-block;
+}
