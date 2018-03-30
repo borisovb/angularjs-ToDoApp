@@ -10,7 +10,7 @@
     <div class="card mb-3">
         <div class="card-header"><i class="fas fa-book"></i> {{employee.Name}}'s Projects</div>
         <div class="list-group">
-            <a href="#!/projects/{{project.ID}}" class="list-group-item list-group-item-action" ng-repeat="project in employee.Projects | filter:{ Name : ''}">
+            <a href="#!/project/{{project.ID}}" class="list-group-item list-group-item-action" ng-repeat="project in employee.Projects | filter:{ Name : ''}">
                 <div class="">{{project.Name}}</div>
             </a>
         </div>
