@@ -78,6 +78,7 @@ angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.dep
             Promise.all([employees, projects]).then(function(collections) {
                 for(var emp in editedDepartment.Employees) {
                     var holder = collections[0].$getRecord(editedDepartment.Employees[emp].ID);
+                    console.log(holder);
                     var holderDepartment = {
                         ID: editedDepartment.$id,
                         Name: editedDepartment.Name
