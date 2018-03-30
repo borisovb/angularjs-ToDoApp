@@ -1,7 +1,7 @@
 'use strict'
-angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.projects.holders', 'myApp.employees.holders'])
+angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.projects.holders', 'myApp.employees.holders', 'myApp.activity'])
 
-.factory('projects', function(database, projectHolderManipulation, $window, employeesHolderManipulation){
+.factory('projects', function(database, projectHolderManipulation, $window, employeesHolderManipulation, activityManager){
 
     var departments;
     var projects;
@@ -27,13 +27,11 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
                 var dep = loadedDepartments.$getRecord(record.Department.ID);
                 projectHolderManipulation.addProjectToHolder(shortProject, dep, loadedDepartments);
             });
+            activityManager.NewActivity('create', 'Project', record.Name);
         });
     }
 
     function deleteRecord(recordID){
-        //check if the project has tasks 
-        //remove project from dep 
-        //remove project from employyes
         var deps = SaveLoadDepartments();
         var emps = SaveLoadEmplyees();
         SaveLoadProjects().then(function(loadedProjects){
@@ -44,21 +42,24 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
                 return;
             }
 
-            emps.then(function(loadedEmployees){
+            var employeesProject = emps.then(function(loadedEmployees){
                 project.Employees.forEach(shortEmp => {
                     if(shortEmp.hasOwnProperty('ID')){
                         var emp = loadedEmployees.$getRecord(shortEmp.ID);
                         projectHolderManipulation.removeProjectFromHolder(recordID, emp, loadedEmployees);
                     }
                 });
-            })
+            });
             
-            deps.then(function(loadedDepartments){
+            var departmentsPromise = deps.then(function(loadedDepartments){
                 var dep = loadedDepartments.$getRecord(project.Department.ID);
                 projectHolderManipulation.removeProjectFromHolder(recordID, dep, loadedDepartments);
-            })
+            });
 
-            loadedProjects.$remove(project);
+            Promise.all([employeesProject, departmentsPromise]).then(function(){
+                activityManager.NewActivity('delete', 'Project', project.Name);
+                loadedProjects.$remove(project);
+            });
         });        
     }
 
@@ -77,6 +78,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
         }).then(function(){
             SaveLoadProjects().then(function(loadedProjects){
                 loadedProjects.$save(updatedRecord);
+                activityManager.NewActivity('update', 'Project', updatedRecord.Name);
             });
         });
         
@@ -94,6 +96,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
                 project.Employees.push(shortEmployee);
                 loadedProjects.$save(project);
             });
+            activityManager.NewActivity('update', 'Project', project.Name);
         });
 
         
@@ -107,6 +110,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
 
         SaveLoadProjects().then(function(loadedProjects){
             employeesHolderManipulation.RemoveEmployeeFromProjects(project.$id, employeeID, loadedProjects);
+            activityManager.NewActivity('update', 'Project', project.Name);
         });
     }
 
