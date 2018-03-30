@@ -18,7 +18,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
     }
 
     function addRecord(record){
-        record.Emoloyees = [{ 'Fake' : true }]
+        record.Employees = [{ 'Fake' : true }]
         record.Tasks = [{ 'Fake' : true }]
 
         getProjects().$add(record).then(function(newRec){
@@ -38,6 +38,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
         var emps = SaveLoadEmplyees();
         SaveLoadProjects().then(function(loadedProjects){
             var project = loadedProjects.$getRecord(recordID)
+
             if (!(project.Tasks.length == 1 && project.Tasks[0].hasOwnProperty("Fake"))) {
                 $window.alert("Cant delete project with tasks, remove them first then try again!");
                 return;
@@ -45,8 +46,10 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
 
             emps.then(function(loadedEmployees){
                 project.Employees.forEach(shortEmp => {
-                    var emp = loadedEmployees.$getRecord(shortEmp.ID);
-                    projectHolderManipulation.removeProjectFromHolder(recordID, emp, loadedEmployees);
+                    if(shortEmp.hasOwnProperty('ID')){
+                        var emp = loadedEmployees.$getRecord(shortEmp.ID);
+                        projectHolderManipulation.removeProjectFromHolder(recordID, emp, loadedEmployees);
+                    }
                 });
             })
             
