@@ -1,8 +1,11 @@
     <div>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#!/Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="#!/departments">Departments</a></li>
-            <li class="breadcrumb-item active">{{department.Name}}</li>
+                <a class="mr-2" href="{{previousPath}}">
+                        <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
+                    </a>
+            <li class="breadcrumb-item align-self-center"><a href="#!/Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item align-self-center"><a href="#!/departments">Departments</a></li>
+            <li class="breadcrumb-item active align-self-center">{{department.Name}}</li>
         </ol>
         <div class="card mb-3">
             <div class="card-header"><i class="fas fa-users"></i> Employees</div>

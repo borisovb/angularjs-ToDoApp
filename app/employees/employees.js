@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.employees.holders', 'myApp.activity', 'ngMaterial', 'ngMessages'])
+angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 
+'myApp.employees.holders', 'myApp.activity', 
+'ngMaterial', 'ngMessages', 'myApp.sharedData'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/employees', {
@@ -16,9 +18,11 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
         controller: 'EmployeeEditCtrl'
     });
 
+    
+
 }])
 
-.controller('EmployeesCtrl', function($scope, $filter, database, employeesManager){
+.controller('EmployeesCtrl', function($scope, $filter, database, employeesManager, $location, previousUrl){
     var empList = database.getCollection("Employees");
     var depList = database.getCollection("Departments");
     var projectsList = database.getCollection("Projects");
@@ -31,6 +35,8 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     $scope.tasks = tasksList;
     $scope.activity = activity;
 
+    $scope.previousPath = previousUrl.path;
+
     $scope.AddRecord = function(){
         $scope.record.DateOfBirth = $filter('date')($scope.picker.DateOfBirth, "MM/dd/yyyy");
         $scope.record.HireDate = $filter('date')($scope.picker.HireDate, "MM/dd/yyyy");
@@ -42,24 +48,40 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
     $scope.DeleteRecord = function(recId, recName){
             employeesManager.DeleteEmployee(recId)
     };
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        console.log(previousUrl.path);
+    });
 })
 
-.controller('EmployeeDetailsCtrl', function($scope, database, $routeParams, $route, employeesManager){
+.controller('EmployeeDetailsCtrl', function($scope, database, $routeParams, $route, 
+        employeesManager, $location, previousUrl){
     var empId = $routeParams.id;
     $scope.employee = employeesManager.GetEmployeeById(empId);
+
+    $scope.previousPath = previousUrl.path;
 
     employeesManager.GetEmployeeById(empId).then(function(result){
         $scope.employee = result;
     })
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        console.log(previousUrl.path);
+    });
 })
 
-.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesHolderManipulation, activityManager){
+.controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesHolderManipulation, 
+    activityManager, $location, previousUrl){
     var empId = $routeParams.id;
 
     var empList = database.getCollection("Employees");
     var depList = database.getCollection("Departments");
 
     $scope.departments = depList;
+
+    $scope.previousPath = previousUrl.path;
 
     var currentRecord;
 
@@ -92,5 +114,9 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager', 'myApp.e
         activityManager.NewActivity("update", "Employee", currentRecord.Name);
     };
 
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        console.log(previousUrl.path);
+    });
 
 })

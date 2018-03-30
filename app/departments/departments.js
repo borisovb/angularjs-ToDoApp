@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', 'myApp.data', 'myApp.departments.departmentsManager'])
+angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', 
+'myApp.data', 'myApp.departments.departmentsManager', 'myApp.sharedData'])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/departments', {
         templateUrl: 'departments/departments.html',
@@ -18,12 +19,16 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
     });
 }])
 
-.controller('DepartmentsCtrl', ['$scope', '$firebaseArray', 'departmentsManager', 'database',
-    function($scope, $firebaseArray, departmentsManager, database) {
+.controller('DepartmentsCtrl', ['$scope', '$firebaseArray', 'departmentsManager', 'database', 
+    '$location', 'previousUrl',
+
+    function($scope, $firebaseArray, departmentsManager, database, $location, previousUrl) {
         var ref = firebase.database().ref();
         var refDep = ref.child('Departments');
         var refEmp = ref.child('Employees');
         var refProj = ref.child('Projects');
+
+        $scope.previousPath = previousUrl.path;
 
         var empList = $firebaseArray(refEmp);
         var projList = $firebaseArray(refProj);
@@ -43,6 +48,11 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
         $scope.delete = function(id) {
             departmentsManager.removeDepartment(id);
         }
+
+        $scope.$on('$locationChangeStart', function (event, current, previous) {
+            previousUrl.path = previous.replace('http://localhost:8000/', '');
+            console.log(previousUrl.path);
+        });
 }])
 
 /*.controller('AddDepartmentCtrl', ['$scope', '$firebaseArray', 
@@ -104,12 +114,14 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
         };
 }]);*/
 
-.controller('DepartmentDetailsCtrl', ['$scope', '$firebaseArray', '$routeParams', 
-    function($scope, $firebaseArray, $routeParams) {
+.controller('DepartmentDetailsCtrl', ['$scope', '$firebaseArray', '$routeParams', '$location', 'previousUrl',
+    function($scope, $firebaseArray, $routeParams, $location, previousUrl) {
         var ref = firebase.database().ref();
         var depRef = ref.child('Departments');
         var refEmp = ref.child('Employees');
         var refProj = ref.child('Projects');
+
+        $scope.previousPath = previousUrl.path;
 
         var depList = $firebaseArray(depRef);
         var empList = $firebaseArray(refEmp);
@@ -120,6 +132,11 @@ angular.module('myApp.departments', ['ngRoute', 'firebase', 'checklist-model', '
             Employees: [],
             Projects: []
         }
+
+        $scope.$on('$locationChangeStart', function (event, current, previous) {
+            previousUrl.path = previous.replace('http://localhost:8000/', '');
+            console.log(previousUrl.path);
+        });
 
         depList.$loaded().then(function(depList) {
             $scope.department = depList.$getRecord($routeParams.id);

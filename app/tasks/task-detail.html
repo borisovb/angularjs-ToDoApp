@@ -1,8 +1,13 @@
 
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="#!/tasks">Tasks</a></li>
-        <li class="breadcrumb-item active">{{task.Name}}</li>
+        <li class="mr-2">
+                <a href="{{previousPath}}">
+                        <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
+                    </a>
+        </li>   
+        <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item align-self-center"><a href="#!/tasks">Tasks</a></li>
+        <li class="breadcrumb-item active align-self-center">{{task.Name}}</li>
     </ol>
     <div class="heading">Update task</div>
     <div class="flex flex-row content-holder">

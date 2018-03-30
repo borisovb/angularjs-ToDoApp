@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar', 'ui.bootstrap', 'ngAnimate'])
+angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar', 'ui.bootstrap', 
+    'ngAnimate', 'myApp.sharedData'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {
@@ -14,7 +15,8 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         })
     }])
 
-    .controller('DashboardCtrl', function ($scope, database, moment, calendarConfig, calendarEventTitle, $location) {
+    .controller('DashboardCtrl', function ($scope, database, moment, calendarConfig, calendarEventTitle, 
+        $location, previousUrl) {
         var tasksObj = database.getCollection('Tasks');
         var employees = database.getCollection('Employees');
         var activity = database.getCollection('Activity');
@@ -23,6 +25,11 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
 
         $scope.calendarView = 'month';
         $scope.viewDate = new Date();
+
+        $scope.$on('$locationChangeStart', function (event, current, previous) {
+            previousUrl.path = previous.replace('http://localhost:8000/', '');
+            console.log(previousUrl.path);
+        });
 
         tasksObj.$watch(function(event) {
             loadCal(tasksObj);
@@ -45,14 +52,11 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
             tempTasks.splice(3);
             $scope.tasks = tempTasks;
 
-            
             loadCal(loadedTasks);
-            
             
         })
 
         
-        console.log(calendarConfig);
 
         function loadCal(loadedTasks) {
 

@@ -1,6 +1,9 @@
 <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
-  <li class="breadcrumb-item active">Projects</li>
+    <a class="mr-2" href="{{previousPath}}">
+        <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
+    </a>
+  <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+  <li class="breadcrumb-item active align-self-center">Projects</li>
 </ol>
 
 <form class="form-inline my-2 my-lg-0 mr-lg-2" style="float:right;">
