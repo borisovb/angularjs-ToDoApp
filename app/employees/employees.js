@@ -59,7 +59,7 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager',
 
     $scope.$on('$locationChangeStart', function (event, current, previous) {
         previousUrl.path = previous.replace('http://localhost:8000/', '');
-        console.log(previousUrl.path);
+        
     });
 })
 
@@ -76,7 +76,7 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager',
 
     $scope.$on('$locationChangeStart', function (event, current, previous) {
         previousUrl.path = previous.replace('http://localhost:8000/', '');
-        console.log(previousUrl.path);
+        
     });
 })
 

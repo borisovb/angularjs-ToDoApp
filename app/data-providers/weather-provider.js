@@ -36,7 +36,6 @@ angular.module('myApp.weatherProvider', ['ngGeolocation'])
 
                     var lat = coordinates.lat;
                     var long = coordinates.lon;
-                    console.log(lat + ", " + long);
 
 
                     $http.get('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + long +

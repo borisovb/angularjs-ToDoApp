@@ -34,7 +34,7 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
 
     $scope.$on('$locationChangeStart', function (event, current, previous) {
         previousUrl.path = previous.replace('http://localhost:8000/', '');
-        console.log(previousUrl.path);
+        
     });
 })
 
@@ -83,6 +83,6 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
 
     $scope.$on('$locationChangeStart', function (event, current, previous) {
         previousUrl.path = previous.replace('http://localhost:8000/', '');
-        console.log(previousUrl.path);
+        
     });
 });
