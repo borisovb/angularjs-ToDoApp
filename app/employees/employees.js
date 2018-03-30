@@ -81,12 +81,12 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager',
 })
 
 .controller('EmployeeEditCtrl', function($scope, database, $routeParams, $route, employeesHolderManipulation, 
-    activityManager, $location, previousUrl){
+    activityManager, $location, $filter, previousUrl){
     var empId = $routeParams.id;
 
     var empList = database.getCollection("Employees");
     var depList = database.getCollection("Departments");
-
+    
     $scope.departments = depList;
 
     $scope.previousPath = previousUrl.path;
@@ -112,19 +112,21 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager',
             currentRecord.Department.ID = $scope.selectedDepartment.$id;
             currentRecord.Department.Name = $scope.selectedDepartment.Name;
         }
+        currentRecord.DateOfBirth = $filter('date')($scope.picker.DateOfBirth, "dd/MM/yyyy");
+        currentRecord.HireDate = $filter('date')($scope.picker.HireDate, "dd/MM/yyyy");
+        
         empList.$save(currentRecord).then(function(newRec){
             var shortEmployee = { "ID" : newRec.key, "Name" : currentRecord.Name };
             employeesHolderManipulation.RemoveEmployeeFromDepartments(currentRecord.Department.ID, newRec.key, depList);
             employeesHolderManipulation.AddEmployeeToDepartment(shortEmployee, $scope.selectedDepartment.$id, depList);
             $route.reload();
-            alert('Employee updated!');
         });
+        alert('Employee updated!');
         activityManager.NewActivity("update", "Employee", currentRecord.Name);
     };
 
     $scope.$on('$locationChangeStart', function (event, current, previous) {
         previousUrl.path = previous.replace('http://localhost:8000/', '');
-        
     });
 
 })

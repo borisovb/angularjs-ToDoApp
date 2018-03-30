@@ -31,8 +31,10 @@
             <div class="right-poss col-4">
                 <form name="editEmployee">
                 <input class="cell form-control" ng-model="selectedEmployee.Name" type="text" required>
-                <input class="cell form-control" ng-model="selectedEmployee.DateOfBirth" type="text" required>
-                <input class="cell form-control" ng-model="selectedEmployee.HireDate" type="text" required>
+                <md-datepicker ng-model="picker.DateOfBirth" md-hide-icons="calendar" required></md-datepicker><br>
+                <md-datepicker ng-model="picker.HireDate" md-hide-icons="calendar" required></md-datepicker>
+                <!-- <input class="cell form-control" ng-model="selectedEmployee.DateOfBirth" type="text" required>
+                <input class="cell form-control" ng-model="selectedEmployee.HireDate" type="text" required> -->
                 <input class="cell form-control" ng-model="selectedEmployee.JobTitle" type="text" required>
                 <select class="cell form-control" ng-options="department.Name for department in departments track by department.$id" ng-model="selectedDepartment" required> </select>
                 </form>
