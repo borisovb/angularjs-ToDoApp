@@ -78,7 +78,7 @@
                     <div class="card-header">
                         <i class="fas fa-thumbtack"></i> Activity Feed </div>
                     <div class="list-group list-group-flush small">
-                        <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | limitTo: activityLimit | orderBy:'-'">
+                        <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | orderBy:'-DateTime' | limitTo: activityLimit">
                             <div class="media">
                                 <div class="media-body">
                                     {{ activity.Message }}
