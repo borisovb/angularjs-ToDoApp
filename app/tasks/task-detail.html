@@ -1,4 +1,14 @@
-<div class="container">
+
+    <ol class="breadcrumb">
+        <li class="mr-2">
+                <a href="{{previousPath}}">
+                        <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+                    </a>
+        </li>   
+        <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item align-self-center"><a href="#!/tasks">Tasks</a></li>
+        <li class="breadcrumb-item active align-self-center">{{task.Name}}</li>
+    </ol>
     <div class="heading">Update task</div>
     <div class="flex flex-row content-holder">
         <div class="col-3">
@@ -25,7 +35,7 @@
             <form name="editTask">
                 <input class="cell form-control" ng-model="task.Name" type="text" reqired>
                 <input class="cell form-control" ng-model="task.Description" type="text" reqired>
-                <select class="cell form-control" name="imp" class="form-control" ng-model="record.Importance" required>
+                <select class="cell form-control" name="imp" class="form-control" ng-model="task.Importance" required>
                     <option value="Low">Low</option>
                     <option value="Meduim">Meduim</option>
                     <option value="High">High</option>
@@ -41,4 +51,3 @@
     <div class="center">
         <button ng-click="UpdateRecord()" ng-disabled="editTask.$invalid" class="btn btn-info">Update</button>
     </div>
-</div>

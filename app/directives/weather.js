@@ -1,33 +1,18 @@
 'use strict'
 
-angular.module('myApp.weather', ['ngGeolocation'])
+angular.module('myApp.weather', ['myApp.weatherProvider'])
 
-    .controller('weatherCtrl', ['$scope', '$http', '$geolocation',
-        function ($scope, $http, $geolocation) {
-            $scope.weatherIcon = 'http://openweathermap.org/img/w/10d.png';
-            $scope.temperature = 10;
-            $scope.description = 'sunny';
-            $scope.location = 'Eindhoven';
+    .controller('weatherCtrl', ['weatherFactory', '$scope',
+        function (weatherFactory, $scope) {
 
-            $geolocation.getCurrentPosition( {
-                enableHighAccuracy : true 
+            var currentWeather = weatherFactory.getWeather();
+
+            currentWeather.then(function(weather) {
+                $scope.temperature = weather.temperature
+                $scope.weatherIcon = weather.weatherIcon;
+                $scope.location = weather.location;
+                $scope.description = weather.description;
             })
-                .then(function (position) {
-                    var apiKey = '6719378f816008e9df61a4ba4321afa2';
-                    var lat = position.coords.latitude;
-                    var long = position.coords.longitude;
-
-                    $http.get('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + long +
-                        '&units=metric&type=accurate&appid=' + apiKey)
-                        .then(function (response) {
-                            $scope.temperature = Math.round(response.data.main.temp);
-                            $scope.weatherIcon = 'http://openweathermap.org/img/w/' + response.data.weather[0].icon + '.png';
-                            $scope.location = response.data.name + ", " + response.data.sys.country;
-                            $scope.description = response.data.weather[0].main;
-                        }, function (error) {
-                        })
-                })
-
 
         }])
 
@@ -45,4 +30,3 @@ angular.module('myApp.weather', ['ngGeolocation'])
 
         }
     }])
-

@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'ngMaterial', 'ngMessages'])
+angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'ngMaterial', 
+    'ngMessages', 'myApp.sharedData'])
 
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/tasks', {
@@ -14,12 +15,12 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
     });
 }])
 
-.controller('TasksCtrl', function($scope, $filter, tasks, database){
-    $scope.isOpen = false;
-
+.controller('TasksCtrl', function($scope, $filter, tasks, database, $location, previousUrl){
     $scope.data = tasks.GetTasks();
     $scope.projects = database.getCollection("Projects");
     $scope.employees = database.getCollection("Employees");
+
+    $scope.previousPath = previousUrl.path;
 
     $scope.AddRecord = function(){
         $scope.record.CreationDate = $filter('date')($scope.picker.CreationDate, "MM/dd/yyyy");
@@ -30,10 +31,18 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
     $scope.DeleteRecord = function(recId){
         tasks.DeleteTask(recId);
     }
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        
+    });
 })
 
-.controller('TaskDetailsCtrl', function($scope, $filter, $routeParams, $route, tasks, database){
+.controller('TaskDetailsCtrl', function($scope, $filter, $routeParams, $route, tasks, 
+    database, $location, previousUrl){
     var id = $routeParams.id;
+
+    $scope.previousPath = previousUrl.path;
 
     $scope.projects = database.getCollection("Projects");
     $scope.employees = database.getCollection("Employees");
@@ -71,4 +80,9 @@ angular.module('myApp.tasks', ['ngRoute', 'myApp.tasksManager', 'myApp.data', 'n
 
         $route.reload()
     };
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        
+    });
 });

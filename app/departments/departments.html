@@ -1,31 +1,36 @@
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
+    <a class="mr-2" href="{{previousPath}}">
+        <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+    </a>
+  <li class="breadcrumb-item align-self-center">
     <a href="#!/Dashboard">Dashboard</a>
   </li>
-  <li class="breadcrumb-item active">Departments</li>
+  <li class="breadcrumb-item active align-self-center">Departments</li>
 </ol>
 
 <form class="form-inline my-2 my-lg-0 mr-lg-2" style="float:right;">
   <div class="input-group">
     <input class="form-control" type="text" ng-model='searchBox' placeholder="Search for...">
     <span class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </span>
+      <button class="btn btn-primary" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </span>
   </div>
-</form><br><br>
+</form>
+<br>
+<br>
 
 <div class="card mb-3">
   <div class="card-header">
-    <i class="fa fa-table"></i> Departments 
-    <!--<a href="#!/departments/department-add"><button type="button" class="btn btn-success" style="float: right">Add</button></a>-->
+    <i class="fa fa-table"></i> Departments
     <button type="button" class="btn btn-success" ng-click="showAdd=!showAdd" style="float: right">Add</button>
   </div>
 
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+      <table class="table table-bordered" id="dataTable">
         <thead>
           <tr>
             <th>Name</th>
@@ -34,44 +39,72 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-show="showAdd">
-            <td><input type="text" class="form-control" placeholder="Name..." ng-model="record.Name" ng-required="required"></td>
-            <td><a href="#!/employees">Add...</a></td>
-            <td><a href="#!/projects">Add...</a></td>
 
-            <td class="d-flex justify-content-around aling-stretch" style="border: none">
-
-              <button class="btn" ng-click="add(record); showAdd=false"><i class="fas fa-plus-square text-success"></i></button>
-              <button class="btn" ng-click="showAdd=false"><i class="fas fa-times text-danger"></i></button>
+          <tr ng-form="addDepartment" ng-show="showAdd" novalidate>
+            <td>
+              <input type="text" class="form-control" placeholder="Name..." ng-model="record.Name" required>
             </td>
-            
-          </tr>
-          <tr ng-repeat="department in data | filter: searchBox">
-              <td><div class="d-flex"><div class="mr-auto" ng-hide="show">{{department.Name}}</div>
-                <input type="text" class="form-control mr-2" ng-value="department.Name" ng-model="record.newName" ng-show="show">
+            <td>
+              <a href="#!/employees"></a>
+            </td>
+            <td>
+              <a href="#!/projects"></a>
+            </td>
 
+            <td class="d-flex justify-content-around" style="border: none">
+
+              <button class="btn" ng-disabled="addDepartment.$invalid" ng-click="add(record); showAdd=false">
+                <i class="fas fa-plus-square text-success"></i>
+              </button>
+              <button class="btn" ng-click="showAdd=false">
+                <i class="fas far fa-trash-alt text-danger"></i>
+              </button>
+            </td>
+
+
+
+          </tr>
+
+          <tr ng-form="editName" ng-repeat="department in data | filter: searchBox" novalidate>
+
+            <td>
+              <div class="d-flex">
+                <div class="mr-auto" ng-hide="show">{{department.Name}}</div>
+                <input type="text" class="form-control mr-2" ng-value="department.Name" ng-model="record.newName" ng-show="show" required>
                 <div ng-hide="show" class="ml-auto">
-                  <button class="btn" ng-click="show=!show"><i class="far fa-edit text-primary"></i></button>
+                  <button class="btn" ng-click="show=!show">
+                    <i class="far fa-edit text-primary"></i>
+                  </button>
                 </div>
                 <div class="d-flex justify-items-around" ng-show="show">
-                  <button class="btn" ng-click="show=!show; update(record.newName, department.$id)"><i class="fas fa-check text-success"></i></button>
-                  <button class="btn" ng-click="show=!show;"><i class="fas fa-times text-danger"></i></button>
+                  <button class="btn" ng-disabled="editName.$invalid" ng-click="show=!show; update(record.newName, department.$id)">
+                    <i class="fas fa-check text-success"></i>
+                  </button>
+                  <button class="btn" ng-click="show=!show;">
+                    <i class="fas fa-times text-danger"></i>
+                  </button>
                 </div>
               </div>
-                  
-                <!--<a style="margin-right: 0" href="#!/departments/department-details/{{department.$id}}">
-                  
-                </a>-->
-              </td>
-              <td>Employees</td>
-              <td>Projects</td>
-              <td class="d-flex justify-content-around aling-stretch" style="border: none">
-                
-                <button class="btn" ng-click="delete(department.$id)"><i class="far fa-trash-alt text-danger" ></i></button> 
-              </td>
-            </tr>
+            </td>
+
+
+            <td>
+              <a href="#!/departments/department-employees/{{department.$id}}">Employees...</a>
+            </td>
+            <td>
+              <a href="#!/departments/department-projects/{{department.$id}}">Projects...</a>
+            </td>
+            </td>
+            <td class="d-flex justify-content-around aling-stretch" style="border: none">
+
+              <button class="btn" ng-click="delete(department.$id)">
+                <i class="far fa-trash-alt text-danger"></i>
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
+
     </div>
   </div>
 </div>

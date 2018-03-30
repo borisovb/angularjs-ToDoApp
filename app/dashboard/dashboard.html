@@ -1,32 +1,108 @@
-<table class="container">
-        
-    <div class="heading">Top 3 urgent tasks</div>
+<div class="row">
+    <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-primary o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
 
-    <table>
-        <tr class="center">
-            <th>Name</th>
-            <th>Dedline</th>
-            <th>Employee</th>
-            <th>Project</th>
-        </tr>
-        <tr class="center" ng-repeat="task in tasks">
-            <td class="cell"><a href="#!/task/{{task.$id}}">{{task.Name}}</a></td>
-            <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
-            <td class="cell"><a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a></td>
-            <td class="cell">{{task.Project.Name}}</td>        
-        </tr>
-    </table>
+                    <div class="card-body-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                </div>
+                <div class="mr-5">
+                    <div class="dash-heading">Weather</div>
+                    <div ng-controller="weatherCtrl">
+                        <weather></weather>
+                    </div>
+                </div>
+            </div>
 
-    <div ng-controller="weatherCtrl">
-        <weather></weather>
-    </div>  
+        </div>
+    </div>
+    <div class="col-xl-6 col-sm-6 mb-3">
+        <div class="card text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fa fa-fw fa-list"></i>
+                </div>
+                <div class="mr-5">
+                    <div class="dash-heading">Top 3 urgent tasks</div>
 
-    <mwl-calendar
-        view="calendarView"
-        view-date="viewDate"
-        events="events"
-        view-title="calendarTitle"
-        cell-is-open="true">
-    </mwl-calendar>
+                    <table>
+                        <tr class="center">
+                            <th>Name</th>
+                            <th>Deadline</th>
+                            <th>Employee</th>
+                            <th>Project</th>
+                        </tr>
+                        <tr class="center" ng-repeat="task in tasks">
+                            <td class="cell">
+                                <a href="#!/task/{{task.$id}}">{{task.Name}}</a>
+                            </td>
+                            <td class="cell">{{task.CompletionDate | date:'MM/dd/yyyy'}}</td>
+                            <td class="cell">
+                                <a href="#!/employee/{{task.Employee.ID}}">{{task.Employee.Name}}</a>
+                            </td>
+                            <td class="cell">{{task.Project.Name}}</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+                <div class="card-body-icon">
+                    <i class="fa fa-trophy"></i>
+                </div>
+                <div class="mr-5">
+                    <div class="dash-heading">Most valuable employee</div>
+                    <div style="margin: 0 auto;">
+                        <i class="fa fa-user" aria-hidden="true"></i> {{ mve.Name }}
+                        <br>
+                        <i class="fa fa-tasks" aria-hidden="true"></i> {{ mve.Tasks.length }} tasks
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
-</table>
+
+<div class="row mr-1 ml-1 mb-3">
+    <div class="row col-sm-4 fit-content">
+            <div class="card clear-pad">
+                    <div class="card-header">
+                        <i class="fas fa-thumbtack"></i> Activity Feed </div>
+                    <div class="list-group list-group-flush small">
+                        <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | orderBy:'-DateTime' | limitTo: activityLimit">
+                            <div class="media">
+                                <div class="media-body">
+                                    {{ activity.Message }}
+                                    <div class="text-muted smaller"> {{ activity.DateTime }}</div>
+                                </div>
+                            </div>
+                        </a>
+                        <button class="list-group-item list-group-item-action" ng-click="activityLoadMore()">Load more...</button>
+                
+                    </div>
+                </div>
+    </div>
+        
+            <div class="col-sm-1">
+
+            </div>
+            
+            <div class="card clear-pad pb-2 col-sm-7">
+            
+                <div class="card-header text-center">{{ calendarTitle }}</div>
+                <mwl-calendar class="col-12" view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-click="eventClicked(calendarEvent)"
+                    on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" 
+                    cell-is-open="false">
+                </mwl-calendar>
+            
+            </div>
+</div>

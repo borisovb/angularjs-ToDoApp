@@ -1,7 +1,7 @@
 'use strict'
-angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
+angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders', 'myApp.activity'])
 
-.factory('tasks', function(database, taskHolderManipulation){
+.factory('tasks', function(database, taskHolderManipulation, activityManager){
 
     var tasks;
     var projects;
@@ -46,6 +46,7 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
                 var shortTask = {"ID": newRec.key, "Name" : record.Name};
                 taskHolderManipulation.AddTaskToHolder(shortTask, values[0], projects);
                 taskHolderManipulation.AddTaskToHolder(shortTask, values[1], employees);
+                activityManager.NewActivity("create", "Task", record.Name);
             });
         });
     }
@@ -64,6 +65,7 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
             });
 
             Promise.all([projectsPromise, employeesPromise]).then(function(){
+                activityManager.NewActivity("delete", "Task", task.Name);
                 loadedTasks.$remove(task);
             })
         })
@@ -73,34 +75,26 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders'])
         var shortTask = { "ID" : updatedRecord.$id, "Name" : updatedRecord.Name };
 
         var projectsPromise = SaveLoadProjects().then(function(loadedProjects){
-            if (updatedRecord.Project.ID != oldProjectID) {
                 var project = loadedProjects.$getRecord(oldProjectID);
                 taskHolderManipulation.RemoveTaskFromHolder(updatedRecord.$id, project, loadedProjects)
     
                 var newProject = loadedProjects.$getRecord(updatedRecord.Project.ID);
                 updatedRecord.Project.Name = newProject.Name;
-    
                 taskHolderManipulation.AddTaskToHolder(shortTask, newProject, loadedProjects);
-            } else {
-                //Handle task name update in the holder
-            }
+            
         });
 
         var employeesPromise = SaveLoadEmployees().then(function(loadedEmployees){
-            if (updatedRecord.Employee.ID != oldEmployeeID) {
                 var employee = loadedEmployees.$getRecord(oldEmployeeID);
                 taskHolderManipulation.RemoveTaskFromHolder(updatedRecord.$id, employee, loadedEmployees);
     
                 var newEmployee = loadedEmployees.$getRecord(updatedRecord.Employee.ID);
                 updatedRecord.Employee.Name = newEmployee.Name;
-    
                 taskHolderManipulation.AddTaskToHolder(shortTask, newEmployee, loadedEmployees);
-            } else {
-                //Handle task name update in the holder
-            }
         });
         
         Promise.all([projectsPromise, employeesPromise]).then(function(){
+            activityManager.NewActivity("update", "Task", updatedRecord.Name);
             tasks.$save(updatedRecord);
         });
         

@@ -1,0 +1,33 @@
+
+    <ol class="breadcrumb">
+            <a class="mr-2" href="{{previousPath}}">
+                    <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+                </a>
+        <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item align-self-center"><a href="#!/projects">Projects</a></li>
+        <li class="breadcrumb-item align-self-center"><a href="#!/project/{{project.$id}}">{{project.Name}}</a></li>
+        <li class="breadcrumb-item active align-self-center">Employees</li>
+    </ol>
+
+    <div class="heading">{{project.Name}} - {{project.Description}}</div>
+    <div class="heading">Manage Employees</div>
+    <div class="flex flex-row content-holder">
+        <div class="col-4">
+            <div class="center">Employees in the project</div>
+            <div class="center" ng-repeat="emp in project.Employees | filter: { Name : '' }">
+                {{emp.Name}}
+                <button ng-click="RemoveEmployee(emp.ID)" type="button" class="btn btn-default" aria-label="Left Align">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="center">Employees not in the project</div>
+            <div class="center" ng-repeat="emp in excludedEmployees">
+                <button ng-click="AddEmployee(emp.$id)" type="button" class="btn btn-default" aria-label="Left Align">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                {{emp.Name}}
+            </div>
+        </div>
+    </div>

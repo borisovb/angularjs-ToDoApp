@@ -1,106 +1,140 @@
 'use strict'
 
-angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.departments.holders'])
+angular.module('myApp.departments.departmentsManager', ['myApp.data', 'myApp.departments.holders', 'myApp.activity'])
 
-.factory('departmentsManager', ['database', 'departmentHolderManipulation', '$window', 
-    function(database, holderManipulation, $window) {
-    var departments;
-    var employees;
-    var projects;
+    .factory('departmentsManager', ['database', 'departmentHolderManipulation', '$window', 'activityManager',
+        function (database, departmentHolderManipulation, $window, activityManager) {
+            var departments;
+            var employees;
+            var projects;
 
-    function getDepartments() {
-        if(angular.isUndefined(departments)) {
-            SaveLoadDepartments().then(function(deps) {
-                departments = deps;
-            })
-        }
-        
-        return departments;
-    }
+            function getDepartments() {
+                if (angular.isUndefined(departments)) {
+                    SaveLoadDepartments().then(function (deps) {
+                        departments = deps;
+                    })
+                }
 
-    function getDepartmentById(id) {
-        if(angular.isUndefined(departments)) {
-            getDepartments();
-        } else {
-            return departments.$getRecord(id);
-        }
-    }
+                return departments;
+            }
 
-    function addDepartment(record) {
-        record.Employees = [];
-        record.Projects = [];
+            function getDepartmentById(id) {
+                if (angular.isUndefined(departments)) {
+                    getDepartments();
+                } else {
+                    return departments.$getRecord(id);
+                }
+            }
 
-        record.Employees.push({Fake: true});
-        record.Projects.push({Fake: true});
+            function addDepartment(record) {
+                record.Employees = [];
+                record.Projects = [];
 
-        departments.$add(record).then(function(department) {
-                var depName = departments.$getRecord(department.key).Name;
-                $window.alert('Successfully added "' + depName + '" to Departments!"');
-            })
-            .catch(function(error) {
-                $window.alert('Could not add the department. Error: ' + error);
-            })
-    }
+                record.Employees.push({ Fake: true });
+                record.Projects.push({ Fake: true });
 
-    function removeDepartment(id) {
-        var delDepartment = getDepartmentById(id);
-
-
-        if((angular.isUndefined(delDepartment.Employees) && angular.isUndefined(delDepartment.Employees))
-                || (delDepartment.Employees[0].Fake && delDepartment.Projects[0].Fake)) {
-            departments.$remove(delDepartment)
-                .then(function(department) {
-                    $window.alert('Successfully removed "' + delDepartment.Name + '" from Departments!"');
+                departments.$add(record).then(function (department) {
+                    var depName = departments.$getRecord(department.key).Name;
+                    activityManager.NewActivity("create", "Department", depName);
+                    $window.alert('Successfully added "' + depName + '" to Departments!"');
                 })
-                .catch(function(error) {
-                    $window.alert('Could not delete the department. Error: ' + error);
-                });
-        } else {
-            $window.aler("Please remove all employees and projects before deletion!");
-        }   
-    }
+                    .catch(function (error) {
+                        $window.alert('Could not add the department. ' + error);
+                    })
+            }
 
-    function updateDepartment(name, depId) {
-        var editDepartment = getDepartmentById(depId);
-        var oldName = editDepartment.Name;
-        editDepartment.Name = name;
-        
-        departments.$save(editDepartment)
-        .then(function(department) {
-            var newName = departments.$getRecord(department.key).Name;
-            $window.alert('Successfully changed "' + oldName + '"' + ' to ' + '"' + newName + '"');
-        })
-        .catch(function(error) {
-            $window.alert('Could not rename department. Error: ' + error);
-        });
-    }
+            function removeDepartment(id) {
+                var delDepartment = getDepartmentById(id);
 
-    function SaveLoadDepartments(){
-        if (departments === undefined) {
-            departments = database.getCollection('Departments');
-        }
-        return departments.$loaded();
-    }
 
-    function SaveLoadProjects(){
-        if (projects === undefined) {
-            projects = database.getCollection('Projects');
-        }
-        return projects.$loaded();
-    }
+                if ((angular.isUndefined(delDepartment.Employees) && angular.isUndefined(delDepartment.Employees))
+                    || (delDepartment.Employees[0].Fake && delDepartment.Projects[0].Fake) && 
+                    ((delDepartment.Employees.length == 1) && (delDepartment.Projects.length == 1))) {
+                    departments.$remove(delDepartment)
+                        .then(function (department) {
+                            activityManager.NewActivity("delete", "Department", delDepartment.Name);
+                            $window.alert('Successfully removed "' + delDepartment.Name + '" from Departments!"');
+                        })
+                        .catch(function (error) {
+                            $window.alert('Could not delete the department. ' + error);
+                        });
+                } else {
+                    $window.alert("Please remove all employees and projects before deletion!");
+                }
+            }
 
-    function SaveLoadEmployees(){
-        if  (employees === undefined){
-            employees = database.getCollection('Employees');
-        }
+            function updateDepartment(name, depId) {
+                var editDepartment = getDepartmentById(depId);
+                var oldName = editDepartment.Name;
+                editDepartment.Name = name;
 
-        return employees.$loaded();
-    }
+                departments.$save(editDepartment)
+                    .then(function (department) {
+                        var editedDepartment = departments.$getRecord(department.key);
+                        var newName = editedDepartment.Name;
 
-    return {
-        addDepartment: addDepartment,
-        getDepartments: getDepartments,
-        updateDepartment: updateDepartment,
-        removeDepartment: removeDepartment
-    }
-}])
+                        employees = SaveLoadEmployees();
+                        projects = SaveLoadProjects();
+
+                        Promise.all([employees, projects]).then(function (collections) {
+                            for (var emp in editedDepartment.Employees) {
+                                if (editedDepartment.Employees[emp].hasOwnProperty('ID')) {
+                                    var holder = collections[0].$getRecord(editedDepartment.Employees[emp].ID);
+                                    var holderDepartment = {
+                                        ID: editedDepartment.$id,
+                                        Name: editedDepartment.Name
+                                    }
+                                    departmentHolderManipulation.addDepartmentToHolder(holderDepartment, holder, collections[0]);
+                                }
+
+                            }
+                            for (var proj in editedDepartment.Projects) {
+                                if (editedDepartment.Projects[proj].hasOwnProperty('ID')) {
+                                    var holder = collections[1].$getRecord(editedDepartment.Projects[proj].ID);
+                                    var holderDepartment = {
+                                        ID: editedDepartment.$id,
+                                        Name: editedDepartment.Name
+                                    }
+                                    departmentHolderManipulation.addDepartmentToHolder(holderDepartment, holder, collections[1]);
+
+                                }
+
+
+                            }
+                        })
+                        activityManager.NewActivity("update", "Department", newName);
+                        $window.alert('Successfully changed "' + oldName + '"' + ' to ' + '"' + newName + '"');
+                    }, function (error) {
+                        $window.alert('Could not rename department. ' + error);
+                    });
+            }
+
+            function SaveLoadDepartments() {
+                if (departments === undefined) {
+                    departments = database.getCollection('Departments');
+                }
+                return departments.$loaded();
+            }
+
+            function SaveLoadProjects() {
+                if (projects === undefined) {
+                    projects = database.getCollection('Projects').$loaded();
+                }
+                return projects;
+            }
+
+            function SaveLoadEmployees() {
+                if (employees === undefined) {
+                    employees = database.getCollection('Employees').$loaded();
+                }
+
+                return employees;
+            }
+
+            return {
+                addDepartment: addDepartment,
+                getDepartments: getDepartments,
+                updateDepartment: updateDepartment,
+                removeDepartment: removeDepartment
+            }
+        }])

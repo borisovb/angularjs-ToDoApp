@@ -1,0 +1,17 @@
+<ol class="breadcrumb">
+        <a class="mr-2" href="{{previousPath}}">
+                <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+            </a>
+    <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+    <li class="breadcrumb-item align-self-center"><a href="#!/projects">Projects</a></li>
+    <li class="breadcrumb-item align-self-center"><a href="#!/project/{{project.$id}}">{{project.Name}}</a></li>
+    <li class="breadcrumb-item active align-self-center">Tasks</li>
+</ol>
+    <div class="card mb-3">
+        <div class="card-header"><i class="fas fa-users"></i> Tasks</div>
+        <div class="list-group">
+            <a href="#!/task/{{task.ID}}" class="list-group-item list-group-item-action" ng-repeat="task in project.Tasks | filter:{ Name : ''}">
+                <div class="">{{task.Name}}</div>
+            </a>
+        </div>
+    </div>
