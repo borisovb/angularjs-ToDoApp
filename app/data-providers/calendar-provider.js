@@ -7,7 +7,7 @@ angular.module('myApp.calendarProvider', ['mwl.calendar', 'ui.bootstrap',
         function (calendarConfig, calendarEventTitle, database, $q) {
             var calendarView = 'month';
             var viewDate = new Date();
-
+            
             function loadCal(loadedTasks) {
                     function generateColor(importance) {
                         var color = "";

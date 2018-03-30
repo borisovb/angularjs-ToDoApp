@@ -23,8 +23,8 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         $scope.activities = activity;
         $scope.activityLimit = 3;
 
-        $scope.calendarView = 'month';
-        $scope.viewDate = new Date();
+        $scope.calendarView = calFactory.calendarView;
+        $scope.viewDate = calFactory.viewDate;
         $scope.events = [];
 
         tasksObj.$watch(function(event) {
