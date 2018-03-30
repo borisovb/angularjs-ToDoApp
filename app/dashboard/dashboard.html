@@ -72,31 +72,37 @@
     </div>
 </div>
 
-
-<div class="card mb-3">
-    <div class="card-header">
-        <i class="fas fa-thumbtack"></i> Activity Feed </div>
-    <div class="list-group list-group-flush small">
-        <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | limitTo: activityLimit | orderBy:'-'">
-            <div class="media">
-                <div class="media-body">
-                    {{ activity.Message }}
-                    <div class="text-muted smaller"> {{ activity.DateTime }}</div>
+<div class="row mr-1 ml-1 mb-3">
+    <div class="row col-sm-4 fit-content">
+            <div class="card clear-pad">
+                    <div class="card-header">
+                        <i class="fas fa-thumbtack"></i> Activity Feed </div>
+                    <div class="list-group list-group-flush small">
+                        <a class="list-group-item list-group-item-action" href="javascript:void(0)" ng-repeat="activity in activities | limitTo: activityLimit | orderBy:'-'">
+                            <div class="media">
+                                <div class="media-body">
+                                    {{ activity.Message }}
+                                    <div class="text-muted smaller"> {{ activity.DateTime }}</div>
+                                </div>
+                            </div>
+                        </a>
+                        <button class="list-group-item list-group-item-action" ng-click="activityLoadMore()">Load more...</button>
+                
+                    </div>
                 </div>
-            </div>
-        </a>
-        <button class="list-group-item list-group-item-action" ng-click="activityLoadMore()">Load more...</button>
-
     </div>
+        
+            <div class="col-sm-1">
+
+            </div>
+            
+            <div class="card clear-pad pb-2 col-sm-7">
+            
+                <div class="card-header text-center">{{ calendarTitle }}</div>
+                <mwl-calendar class="col-12" view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-click="eventClicked(calendarEvent)"
+                    on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" 
+                    cell-is-open="false">
+                </mwl-calendar>
+            
+            </div>
 </div>
-
-<div class="card">
-
-    <div class="card-header text-center">{{ calendarTitle }}</div>
-    <mwl-calendar class="col-12" view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-click="eventClicked(calendarEvent)"
-        on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="false">
-    </mwl-calendar>
-
-</div>
-
-

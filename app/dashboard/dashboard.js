@@ -1,16 +1,21 @@
 'use strict'
 
-angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar'])
+angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar', 'ui.bootstrap', 'ngAnimate'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {
             templateUrl: 'dashboard/dashboard.html',
             controller: 'DashboardCtrl'
         });
+
+        $routeProvider.when('/task/:id', {
+            templateUrl: 'tasks/task-detail.html',
+            controller: 'TaskDetailsCtrl'
+        })
     }])
 
-    .controller('DashboardCtrl', function ($scope, database, moment, calendarConfig) {
-        var tasks = database.getCollection('Tasks');
+    .controller('DashboardCtrl', function ($scope, database, moment, calendarConfig, calendarEventTitle, $location) {
+        var tasksObj = database.getCollection('Tasks');
         var employees = database.getCollection('Employees');
         var activity = database.getCollection('Activity');
         $scope.activities = activity;
@@ -19,51 +24,85 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         $scope.calendarView = 'month';
         $scope.viewDate = new Date();
 
+        tasksObj.$watch(function(event) {
+            loadCal(tasksObj);
+        });
+
         $scope.activityLoadMore = function activityLoadMore() {
             $scope.activityLimit = $scope.activityLimit + 3;
         }
 
-        tasks.$loaded().then(function (loadedTasks) {
+        tasksObj.$loaded().then(function (loadedTasks) {
+
+            var tempTasks = [];
             loadedTasks.forEach(task => {
                 task['CompletionDate'] = new Date(task['CompletionDate']);
+                tempTasks.push(task);
             });
-            loadedTasks.sort(function (a, b) {
+            tempTasks.sort(function (a, b) {
                 return b['CompletionDate'] - a['CompletionDate'];
             });
-            loadedTasks.splice(3);
-            $scope.tasks = loadedTasks;
+            tempTasks.splice(3);
+            $scope.tasks = tempTasks;
 
-            function generateColor() {
-                var color = 'rgba(' + (Math.floor(Math.random() * 256)) + ',' + 
-                (Math.floor(Math.random() * 256)) + ',' + 
-                (Math.floor(Math.random() * 256)) + ', 0.6)';
+            
+            loadCal(loadedTasks);
+            
+            
+        })
+
+        
+        console.log(calendarConfig);
+
+        function loadCal(loadedTasks) {
+
+            var events = getEvents(loadedTasks);
+
+            $scope.events = events;
+
+            
+          
+
+            $scope.eventClicked = function(event) {
+                var path = 'task/' + event.id;
+
+                $location.url(path);
+            }
+
+            function generateColor(importance) {
+                var color = "";
+
+                switch(importance) {
+                    case 'Low': color = calendarConfig.colorTypes.info; break;
+                    case 'Medium': color = calendarConfig.colorTypes.success; break;
+                    case 'High': color = calendarConfig.colorTypes.warning; break;
+                    case 'Top priority': color = calendarConfig.colorTypes.important; break;
+                }
 
                 return color;
             }
-            function getEvents() {
+            
+            function getEvents(loadedTasks) {
                 var tasks = [];
                 loadedTasks.forEach(task => {
-                    var taskData = {};
-                    var tempColor = generateColor();
+                    var eventData = {};
+                    var tempColor = generateColor(task.Importance);
 
-                    taskData.title = task.Name;
-                    taskData.startsAt = new Date(task.CreationDate);
-                    taskData.endsAt = task.CompletionDate;
-                    taskData.color = {
-                        primary: tempColor,
-                        secondary: tempColor
-                    }
+                    eventData.title = task.Name;
+                    eventData.startsAt = new Date(task.CreationDate);
+                    eventData.endsAt = new Date(task.CompletionDate);
+                    eventData.color = tempColor;
+                    eventData.id = task.$id;
 
-                    tasks.push(taskData);
+                    tasks.push(eventData);
                 })
 
                 return tasks;
             }
-            var events = getEvents();
-
             
-            $scope.events = events;
-        })
+        }
+
+        
 
         employees.$loaded().then(function (loadedEmployees) {
 
