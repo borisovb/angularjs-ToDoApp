@@ -27,6 +27,11 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         $scope.viewDate = new Date();
         $scope.events = [];
 
+        tasksObj.$watch(function(event) {
+            tasksObj.$loaded().then(function(loadedTasks) {
+                $scope.events = calFactory.loadCal(loadedTasks);
+            });
+        });
         
         $scope.eventClicked = function(event) {
             var path = 'task/' + event.id;
@@ -40,9 +45,7 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
             
         });
 
-        tasksObj.$watch(function(event) {
-            loadCal(tasksObj);
-        });
+        
 
         $scope.activityLoadMore = function activityLoadMore() {
             $scope.activityLimit = $scope.activityLimit + 3;
@@ -60,11 +63,10 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
             });
             tempTasks.splice(3);
             $scope.tasks = tempTasks;
-
-            $scope.events = calFactory.loadCal(loadedTasks);
             
         })
 
+        
         
 
         employees.$loaded().then(function (loadedEmployees) {

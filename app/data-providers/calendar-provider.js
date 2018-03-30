@@ -7,10 +7,8 @@ angular.module('myApp.calendarProvider', ['mwl.calendar', 'ui.bootstrap',
         function (calendarConfig, calendarEventTitle, database, $q) {
             var calendarView = 'month';
             var viewDate = new Date();
-            var events;
 
             function loadCal(loadedTasks) {
-                if (angular.isUndefined(events)) {
                     function generateColor(importance) {
                         var color = "";
 
@@ -24,7 +22,7 @@ angular.module('myApp.calendarProvider', ['mwl.calendar', 'ui.bootstrap',
                         return color;
                     }
 
-                    var tasks = [];
+                    var events = [];
                     loadedTasks.forEach(task => {
                         var eventData = {};
                         var tempColor = generateColor(task.Importance);
@@ -35,10 +33,8 @@ angular.module('myApp.calendarProvider', ['mwl.calendar', 'ui.bootstrap',
                         eventData.color = tempColor;
                         eventData.id = task.$id;
 
-                        tasks.push(eventData);
+                        events.push(eventData);
                     });
-                    events = tasks;
-                }
 
                 return events;
             }
