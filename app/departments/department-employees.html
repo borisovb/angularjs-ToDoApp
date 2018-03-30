@@ -1,7 +1,7 @@
     <div>
         <ol class="breadcrumb">
                 <a class="mr-2" href="{{previousPath}}">
-                        <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
+                        <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
                     </a>
             <li class="breadcrumb-item align-self-center"><a href="#!/Dashboard">Dashboard</a></li>
             <li class="breadcrumb-item align-self-center"><a href="#!/departments">Departments</a></li>
@@ -10,10 +10,11 @@
         <div class="card mb-3">
             <div class="card-header"><i class="fas fa-users"></i> Employees</div>
             <div class="list-group">
-                <a href="#!/employees/edit/{{employee.ID}}" class="list-group-item list-group-item-action" ng-repeat="employee in employees">
+                <a ng-repeat="employee in employees" ng-show="!employee.Fake" href="#!/employees/edit/{{employee.ID}}" class="list-group-item list-group-item-action">
                     <div class="">{{employee.Name}}</div>
                 </a>
             </div>
+            <div class="list-group-item" ng-show="employees[0].Fake && employees.length==1">No projects added yet!</div>
         </div>
         
     </div>

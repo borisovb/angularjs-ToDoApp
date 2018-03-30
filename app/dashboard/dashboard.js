@@ -28,7 +28,7 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
 
         $scope.$on('$locationChangeStart', function (event, current, previous) {
             previousUrl.path = previous.replace('http://localhost:8000/', '');
-            console.log(previousUrl.path);
+            
         });
 
         tasksObj.$watch(function(event) {
