@@ -75,29 +75,22 @@ angular.module('myApp.tasksManager', ['myApp.data', 'myApp.tasks.holders', 'myAp
         var shortTask = { "ID" : updatedRecord.$id, "Name" : updatedRecord.Name };
 
         var projectsPromise = SaveLoadProjects().then(function(loadedProjects){
-            if (updatedRecord.Project.ID != oldProjectID) {
                 var project = loadedProjects.$getRecord(oldProjectID);
                 taskHolderManipulation.RemoveTaskFromHolder(updatedRecord.$id, project, loadedProjects)
     
                 var newProject = loadedProjects.$getRecord(updatedRecord.Project.ID);
                 updatedRecord.Project.Name = newProject.Name;
                 taskHolderManipulation.AddTaskToHolder(shortTask, newProject, loadedProjects);
-            } else {
-                //Handle task name update in the holder
-            }
+            
         });
 
         var employeesPromise = SaveLoadEmployees().then(function(loadedEmployees){
-            if (updatedRecord.Employee.ID != oldEmployeeID) {
                 var employee = loadedEmployees.$getRecord(oldEmployeeID);
                 taskHolderManipulation.RemoveTaskFromHolder(updatedRecord.$id, employee, loadedEmployees);
     
                 var newEmployee = loadedEmployees.$getRecord(updatedRecord.Employee.ID);
                 updatedRecord.Employee.Name = newEmployee.Name;
                 taskHolderManipulation.AddTaskToHolder(shortTask, newEmployee, loadedEmployees);
-            } else {
-                //Handle task name update in the holder
-            }
         });
         
         Promise.all([projectsPromise, employeesPromise]).then(function(){
