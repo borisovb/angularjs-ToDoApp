@@ -11,7 +11,6 @@ angular.module('myApp.calendarProvider', ['mwl.calendar', 'ui.bootstrap',
 
             function loadCal(loadedTasks) {
                 if (angular.isUndefined(events)) {
-                    console.log("asdasd");
                     function generateColor(importance) {
                         var color = "";
 
