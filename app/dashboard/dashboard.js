@@ -52,8 +52,6 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         })
 
         
-        console.log(calendarConfig);
-
         function loadCal(loadedTasks) {
 
             var events = getEvents(loadedTasks);
@@ -105,13 +103,13 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         
 
         employees.$loaded().then(function (loadedEmployees) {
-
+            var mostTasks = 0;
             for (let i = 0; i < loadedEmployees.length; i++) {
-
-                if (loadedEmployees[i].Tasks.length > loadedEmployees[i + 1].Tasks.length) {
+                if(loadedEmployees[i].Tasks.length >= mostTasks){
+                    mostTasks = loadedEmployees[i].Tasks.length;
                     $scope.mve = loadedEmployees[i];
                 }
             }
         })
-
-    });
+        
+    })
