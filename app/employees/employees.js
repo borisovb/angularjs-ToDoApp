@@ -9,6 +9,14 @@ angular.module('myApp.employees', ['ngRoute', 'myApp.employeesManager',
         templateUrl: 'employees/employees.html',
         controller: 'EmployeesCtrl'
     });
+    $routeProvider.when('/employees/employee-projects/:id', {
+        templateUrl: 'employees/employee-projects.html',
+        controller: 'EmployeeDetailsCtrl'
+    });
+    $routeProvider.when('/employees/employee-tasks/:id', {
+        templateUrl: 'employees/employee-tasks.html',
+        controller: 'EmployeeDetailsCtrl'
+    });
     $routeProvider.when('/employee/:id',{
         templateUrl: 'employees/employee-detail.html',
         controller: 'EmployeeDetailsCtrl'

@@ -1,0 +1,18 @@
+<div>
+    <ol class="breadcrumb">
+            <a class="mr-2" href="{{previousPath}}">
+                    <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
+                </a>
+        <li class="breadcrumb-item align-self-center"><a href="#!/Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item align-self-center"><a href="#!/employees">Employees</a></li>
+        <li class="breadcrumb-item active align-self-center">{{employee.Name}}'s Tasks</li>
+    </ol>
+    <div class="card mb-3">
+        <div class="card-header"><i class="fas fa-tasks"></i> {{employee.Name}}'s Tasks</div>
+        <div class="list-group">
+            <a href="#!/task/{{task.ID}}" class="list-group-item list-group-item-action" ng-repeat="task in employee.Tasks | filter:{ Name : ''}">
+                <div class="">{{task.Name}}</div>
+            </a>
+        </div>
+    </div>    
+</div>

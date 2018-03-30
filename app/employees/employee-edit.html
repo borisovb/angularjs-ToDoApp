@@ -1,7 +1,14 @@
 <div class="container">
-        <a href="{{previousPath}}">
-            <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
-        </a>
+        <ol class="breadcrumb">
+            <a class="mr-2" href="{{previousPath}}">
+                <button ng-disabled="previousPath == undefined" class="btn btn-primary">Back</button>
+            </a>
+                <li class="breadcrumb-item align-self-center">
+                  <a href="#!/Dashboard">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active align-self-center">Employees</li>
+                <li class="breadcrumb-item active align-self-center">Edit {{ ::selectedEmployee.Name }}</li>
+              </ol>
         <div class="heading">Update Employee</div>
         <div class="flex flex-row content-holder">
             <div class="col-3">
