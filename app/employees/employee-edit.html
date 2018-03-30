@@ -24,7 +24,7 @@
                 <input class="cell form-control" ng-model="selectedEmployee.DateOfBirth" type="text" required>
                 <input class="cell form-control" ng-model="selectedEmployee.HireDate" type="text" required>
                 <input class="cell form-control" ng-model="selectedEmployee.JobTitle" type="text" required>
-                <select class="form-control" ng-options="department.Name for department in departments track by department.$id" ng-model="selectedDepartment" required> </select>
+                <select class="cell form-control" ng-options="department.Name for department in departments track by department.$id" ng-model="selectedDepartment" required> </select>
                 </form>
             </div>
         </div>

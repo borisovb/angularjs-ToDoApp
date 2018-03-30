@@ -1,4 +1,10 @@
-<div class="container">
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="#!/projects">Projects</a></li>
+        <li class="breadcrumb-item active">{{project.Name}}</li>
+    </ol>
+
     <div class="heading">Update project</div>
     <div class="flex flex-row content-holder">
         <div class="col-3">
@@ -31,4 +37,3 @@
         <button ng-click="UpdateRecord()" ng-disabled="editProject.$invalid" class="btn btn-info">Update</button>
         <a href="#!/project/{{project.$id}}/employees"><button class="btn btn-info">Mannage Employees</button></a>
     </div>
-</div>

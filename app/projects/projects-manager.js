@@ -1,7 +1,7 @@
 'use strict'
-angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.projects.holders', ])
+angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.projects.holders', 'myApp.employees.holders'])
 
-.factory('projects', function(database, projectHolderManipulation, $window){
+.factory('projects', function(database, projectHolderManipulation, $window, employeesHolderManipulation){
 
     var departments;
     var projects;
@@ -79,17 +79,31 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
         
     }
 
-    function addEmployeeToProject(project, employee){
+    function addEmployeeToProject(project, employeeID){
         var shortProject = { "ID" : project.$id, "Name" : project.Name }
-        var shortEmployee = { "ID" : employee.$id, "Name" : employee.Name }
 
         SaveLoadEmplyees().then(function(loadedEmployees){
+            var employee = loadedEmployees.$getRecord(employeeID);
             projectHolderManipulation.addProjectToHolder(shortProject, employee, loadedEmployees);
+            return { "ID" : employee.$id, "Name" : employee.Name }
+        }).then(function(shortEmployee){
+            SaveLoadProjects().then(function(loadedProjects){
+                project.Employees.push(shortEmployee);
+                loadedProjects.$save(project);
+            });
+        });
+
+        
+    }
+
+    function removeEmployeeFromProject(project, employeeID){
+        SaveLoadEmplyees().then(function(loadedEmployees){
+            var employee = loadedEmployees.$getRecord(employeeID);
+            projectHolderManipulation.removeProjectFromHolder(project.$id, employee, loadedEmployees);
         });
 
         SaveLoadProjects().then(function(loadedProjects){
-            project.Employees.push(shortEmployee);
-            loadedProjects.$save(project);
+            employeesHolderManipulation.RemoveEmployeeFromProjects(project.$id, employeeID, loadedProjects);
         });
     }
 
@@ -123,6 +137,7 @@ angular.module('myApp.projectsManager', ['myApp.data', 'myApp.activity', 'myApp.
         addRecord : addRecord,
         deleteRecord : deleteRecord,
         updateProject : updateProject,
-        addEmployeeToProject : addEmployeeToProject
+        addEmployeeToProject : addEmployeeToProject,
+        removeEmployeeFromProject : removeEmployeeFromProject
     }
 });

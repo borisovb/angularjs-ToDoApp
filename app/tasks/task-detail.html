@@ -1,4 +1,9 @@
-<div class="container">
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="#!/tasks">Tasks</a></li>
+        <li class="breadcrumb-item active">{{task.Name}}</li>
+    </ol>
     <div class="heading">Update task</div>
     <div class="flex flex-row content-holder">
         <div class="col-3">
@@ -41,4 +46,3 @@
     <div class="center">
         <button ng-click="UpdateRecord()" ng-disabled="editTask.$invalid" class="btn btn-info">Update</button>
     </div>
-</div>

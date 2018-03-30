@@ -12,6 +12,11 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
         controller: 'ProjectEmployeesCtrl'
     });
 
+    $routeProvider.when('/project/:id/tasks', {
+        templateUrl: 'projects/project-tasks.html',
+        controller: 'ProjectTasksCtrl'
+    });
+
     $routeProvider.when('/project/:id', {
         templateUrl: 'projects/project-details.html',
         controller: 'ProjectDetailsCtrl'
@@ -77,8 +82,26 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
 
     });
 
+    $scope.AddEmployee = function(EmpId){
+        projects.addEmployeeToProject($scope.project, EmpId);
+        $route.reload();
+    }
+
+    $scope.RemoveEmployee = function(EmpId){
+        projects.removeEmployeeFromProject($scope.project, EmpId);
+        $route.reload();
+    }
+
     function NotInProject(project, empID){
         return !project.Employees.some(emp => emp.ID == empID);
     }
+})
+
+.controller('ProjectTasksCtrl', function($scope, $routeParams, projects){
+    var id = $routeParams.id;
+
+    projects.getProjectById(id).then(function(project){
+        $scope.project = project;
+    })
 
 });

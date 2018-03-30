@@ -1,29 +1,30 @@
-<div class="container">
-    <div class="heading">Update project</div>
-    <div class="flex flex-row content-holder">
-        <div class="col-3">
-            <div class="cell">Name</div>
-            <div class="cell">Description</div>
-            <div class="cell">Department</div>
-            <div class="cell">Creation Date</div>
-            <div class="cell">Completion Date</div>
-        </div>
 
-        <div class="col-4">
-            <div class="cell">{{project.Name}}</div>
-            <div class="cell">{{project.Description}}</div>    
-            <div class="cell">{{project.Department.Name}}</div>    
-            <div class="cell">{{project.CreationDate}}</div>    
-            <div class="cell">{{project.CompletionDate}}</div>    
-        </div>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="#!/projects">Projects</a></li>
+        <li class="breadcrumb-item"><a href="#!/project/{{project.$id}}">{{project.Name}}</a></li>
+        <li class="breadcrumb-item active">Employees</li>
+    </ol>
 
-    </div>
+    <div class="heading">{{project.Name}} - {{project.Description}}</div>
+    <div class="heading">Manage Employees</div>
     <div class="flex flex-row content-holder">
         <div class="col-4">
-            <div ng-repeat="emp in project.Employees">{{emp.Name}}</div>
+            <div class="center">Employees in the project</div>
+            <div class="center" ng-repeat="emp in project.Employees | filter: { Name : '' }">
+                {{emp.Name}}
+                <button ng-click="RemoveEmployee(emp.ID)" type="button" class="btn btn-default" aria-label="Left Align">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
         </div>
         <div class="col-4">
-            <div ng-repeat="emp in excludedEmployees">{{emp.Name}}</div>
+            <div class="center">Employees not in the project</div>
+            <div class="center" ng-repeat="emp in excludedEmployees">
+                <button ng-click="AddEmployee(emp.$id)" type="button" class="btn btn-default" aria-label="Left Align">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                {{emp.Name}}
+            </div>
         </div>
     </div>
-</div>

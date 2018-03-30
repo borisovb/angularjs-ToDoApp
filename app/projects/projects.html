@@ -1,7 +1,5 @@
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="#">Dashboard</a>
-  </li>
+  <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
   <li class="breadcrumb-item active">Projects</li>
 </ol>
 
@@ -64,8 +62,8 @@
             <td>{{project.Name}}</td>
             <td>{{project.Description}}</td>
             <td>{{project.Department.Name}}</td>
-            <td>Employees</td>
-            <td>Tasks</td>
+            <td><a href="#!/project/{{project.$id}}/employees">Employees</a></td>
+            <td><a href="#!/project/{{project.$id}}/tasks">Tasks</a></td>
             <td>{{project.CreationDate}} </td>
             <td>{{project.CompletionDate}}</td>
             <td class="d-flex justify-content-around aling-stretch" style="border: none">
