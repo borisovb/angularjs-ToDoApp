@@ -1,8 +1,11 @@
 
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="#!/projects">Projects</a></li>
-        <li class="breadcrumb-item active">{{project.Name}}</li>
+            <a class="mr-2" href="{{previousPath}}">
+                    <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+                </a>
+        <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+        <li class="breadcrumb-item align-self-center"><a href="#!/projects">Projects</a></li>
+        <li class="breadcrumb-item active align-self-center">{{project.Name}}</li>
     </ol>
 
     <div class="heading">Update project</div>

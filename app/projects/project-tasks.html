@@ -1,8 +1,11 @@
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#!/">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="#!/projects">Projects</a></li>
-    <li class="breadcrumb-item"><a href="#!/project/{{project.$id}}">{{project.Name}}</a></li>
-    <li class="breadcrumb-item active">Tasks</li>
+        <a class="mr-2" href="{{previousPath}}">
+                <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+            </a>
+    <li class="breadcrumb-item align-self-center"><a href="#!/">Dashboard</a></li>
+    <li class="breadcrumb-item align-self-center"><a href="#!/projects">Projects</a></li>
+    <li class="breadcrumb-item align-self-center"><a href="#!/project/{{project.$id}}">{{project.Name}}</a></li>
+    <li class="breadcrumb-item active align-self-center">Tasks</li>
 </ol>
     <div class="card mb-3">
         <div class="card-header"><i class="fas fa-users"></i> Tasks</div>

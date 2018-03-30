@@ -1,8 +1,11 @@
 <ol class="breadcrumb">
-        <li class="breadcrumb-item">
+    <a class="mr-2" href="{{previousPath}}">
+        <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+    </a>
+        <li class="breadcrumb-item align-self-center">
           <a href="#!/Dashboard">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">Employees</li>
+        <li class="breadcrumb-item active align-self-center">Employees</li>
       </ol>
 
         <form class="form-inline my-2 my-lg-0 mr-lg-2" style="float:right;">
@@ -61,8 +64,8 @@
                     <td> {{ employee.HireDate }} </td>
                     <td> {{ employee.JobTitle }} </td>
                     <td> {{ employee.Department.Name }} </td>
-                    <td> <a href="#!/employee/{{employee.$id}}"> Show Details...</a> </td>
-                    <td> <a href="#!/employee/{{employee.$id}}"> Show Details...</a> </td>
+                    <td> <a href="#!/employees/employee-projects/{{employee.$id}}"> Projects... </a> </td>
+                    <td> <a href="#!/employees/employee-tasks/{{employee.$id}}"> Tasks... </a> </td>
                     
                     <td class="d-flex justify-content-around aling-stretch" style="border: none">
                         <a href="#!/employees/edit/{{employee.$id}}"><i class="far fa-edit text-primary"></i></a>

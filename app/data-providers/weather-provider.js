@@ -14,7 +14,7 @@ angular.module('myApp.weatherProvider', ['ngGeolocation'])
             function getGeoLocationPromise() {
                 if (angular.isUndefined(locationPromise)) {
                     var locationDefered = $q.defer();
-                    $http.get('http://extreme-ip-lookup.com/json')
+                    $http.get('https://extreme-ip-lookup.com/json')
                         .then(function (response) {
                             var coordinates = response.data;
                             locationDefered.resolve(coordinates);
@@ -36,7 +36,6 @@ angular.module('myApp.weatherProvider', ['ngGeolocation'])
 
                     var lat = coordinates.lat;
                     var long = coordinates.lon;
-                    console.log(lat + ", " + long);
 
 
                     $http.get('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + long +

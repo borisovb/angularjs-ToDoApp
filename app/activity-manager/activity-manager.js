@@ -5,7 +5,7 @@ angular.module('myApp.activity', ['myApp.data'])
 
     function NewActivity(operationType, typeName, name){
         var activity = database.getCollection('Activity');
-        var currentDate = new Date().toLocaleString();
+        var currentDate = new Date().toLocaleString('en-GB');
         var newActivty;
 
         if (operationType === "create"){

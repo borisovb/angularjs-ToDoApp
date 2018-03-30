@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.data'])
+angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.data', 'myApp.sharedData'])
 .config(['$routeProvider', function($routeProvider){
     $routeProvider.when('/projects', {
         templateUrl: 'projects/projects.html',
@@ -23,9 +23,11 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
     });
 }])
 
-.controller('ProjectsCtrl', function($scope, $filter, database, projects){
+.controller('ProjectsCtrl', function($scope, $filter, database, projects, $location, previousUrl){
     $scope.data = projects.getProjects();
     $scope.departments = database.getCollection('Departments');
+
+    $scope.previousPath = previousUrl.path;
 
     $scope.AddRecord = function(){
         $scope.record.CreationDate = $filter('date')($scope.picker.CreationDate, "MM/dd/yyyy");
@@ -37,10 +39,18 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
     $scope.DeleteRecord = function(recordID){
         projects.deleteRecord(recordID);
     }
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        
+    });
 })
 
-.controller('ProjectDetailsCtrl', function($scope, $routeParams, $route, $filter, projects, database){
+.controller('ProjectDetailsCtrl', function($scope, $routeParams, $route, $filter, projects, 
+    database, $location, previousUrl){
     var id = $routeParams.id;
+
+    $scope.previousPath = previousUrl.path;
     
     $scope.departments = database.getCollection('Departments');
 
@@ -68,10 +78,18 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
 
         $route.reload()
     }
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        
+    });
 })
 
-.controller('ProjectEmployeesCtrl', function($scope, $routeParams, $route, projects, database){
+.controller('ProjectEmployeesCtrl', function($scope, $routeParams, $route, projects, 
+    database, $location, previousUrl){
     var id = $routeParams.id;
+
+    $scope.previousPath = previousUrl.path;
 
     projects.getProjectById(id).then(function(project){
         $scope.project = project
@@ -95,13 +113,24 @@ angular.module('myApp.projects', ['ngRoute', 'myApp.projectsManager', 'myApp.dat
     function NotInProject(project, empID){
         return !project.Employees.some(emp => emp.ID == empID);
     }
+
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        
+    });
 })
 
-.controller('ProjectTasksCtrl', function($scope, $routeParams, projects){
+.controller('ProjectTasksCtrl', function($scope, $routeParams, projects, $location, previousUrl){
     var id = $routeParams.id;
+
+    $scope.previousPath = previousUrl.path;
 
     projects.getProjectById(id).then(function(project){
         $scope.project = project;
     })
 
+    $scope.$on('$locationChangeStart', function (event, current, previous) {
+        previousUrl.path = previous.replace('http://localhost:8000/', '');
+        
+    });
 });

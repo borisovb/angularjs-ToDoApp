@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar', 'ui.bootstrap', 'ngAnimate'])
+angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mwl.calendar', 'ui.bootstrap', 
+    'ngAnimate', 'myApp.sharedData', 'myApp.calendarProvider'])
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {
@@ -14,19 +15,37 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
         })
     }])
 
-    .controller('DashboardCtrl', function ($scope, database, moment, calendarConfig, calendarEventTitle, $location) {
+    .controller('DashboardCtrl', function ($scope, database, moment,
+        $location, previousUrl, calFactory) {
         var tasksObj = database.getCollection('Tasks');
         var employees = database.getCollection('Employees');
         var activity = database.getCollection('Activity');
         $scope.activities = activity;
         $scope.activityLimit = 3;
 
-        $scope.calendarView = 'month';
-        $scope.viewDate = new Date();
+        $scope.calendarView = calFactory.calendarView;
+        $scope.viewDate = calFactory.viewDate;
+        $scope.events = [];
 
         tasksObj.$watch(function(event) {
-            loadCal(tasksObj);
+            tasksObj.$loaded().then(function(loadedTasks) {
+                $scope.events = calFactory.loadCal(loadedTasks);
+            });
         });
+        
+        $scope.eventClicked = function(event) {
+            var path = 'task/' + event.id;
+
+            $location.url(path);
+        }
+        
+
+        $scope.$on('$locationChangeStart', function (event, current, previous) {
+            previousUrl.path = previous.replace('http://localhost:8000/', '');
+            
+        });
+
+        
 
         $scope.activityLoadMore = function activityLoadMore() {
             $scope.activityLimit = $scope.activityLimit + 3;
@@ -44,74 +63,20 @@ angular.module('myApp.dashboard', ['ngRoute', 'myApp.data', 'myApp.weather', 'mw
             });
             tempTasks.splice(3);
             $scope.tasks = tempTasks;
-
-            
-            loadCal(loadedTasks);
-            
             
         })
 
         
-        console.log(calendarConfig);
-
-        function loadCal(loadedTasks) {
-
-            var events = getEvents(loadedTasks);
-
-            $scope.events = events;
-
-            
-          
-
-            $scope.eventClicked = function(event) {
-                var path = 'task/' + event.id;
-
-                $location.url(path);
-            }
-
-            function generateColor(importance) {
-                var color = "";
-
-                switch(importance) {
-                    case 'Low': color = calendarConfig.colorTypes.info; break;
-                    case 'Medium': color = calendarConfig.colorTypes.success; break;
-                    case 'High': color = calendarConfig.colorTypes.warning; break;
-                    case 'Top priority': color = calendarConfig.colorTypes.important; break;
-                }
-
-                return color;
-            }
-            
-            function getEvents(loadedTasks) {
-                var tasks = [];
-                loadedTasks.forEach(task => {
-                    var eventData = {};
-                    var tempColor = generateColor(task.Importance);
-
-                    eventData.title = task.Name;
-                    eventData.startsAt = new Date(task.CreationDate);
-                    eventData.endsAt = new Date(task.CompletionDate);
-                    eventData.color = tempColor;
-                    eventData.id = task.$id;
-
-                    tasks.push(eventData);
-                })
-
-                return tasks;
-            }
-            
-        }
-
         
 
         employees.$loaded().then(function (loadedEmployees) {
-
+            var mostTasks = 0;
             for (let i = 0; i < loadedEmployees.length; i++) {
-
-                if (loadedEmployees[i].Tasks.length > loadedEmployees[i + 1].Tasks.length) {
+                if(loadedEmployees[i].Tasks.length >= mostTasks){
+                    mostTasks = loadedEmployees[i].Tasks.length;
                     $scope.mve = loadedEmployees[i];
                 }
             }
         })
-
-    });
+        
+    })

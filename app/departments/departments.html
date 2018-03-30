@@ -1,8 +1,11 @@
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
+    <a class="mr-2" href="{{previousPath}}">
+        <button ng-disabled="previousPath == undefined" class="btn btn-primary"><i class="fas fa-chevron-circle-left"></i> Back</button>
+    </a>
+  <li class="breadcrumb-item align-self-center">
     <a href="#!/Dashboard">Dashboard</a>
   </li>
-  <li class="breadcrumb-item active">Departments</li>
+  <li class="breadcrumb-item active align-self-center">Departments</li>
 </ol>
 
 <form class="form-inline my-2 my-lg-0 mr-lg-2" style="float:right;">
@@ -54,7 +57,7 @@
                 <i class="fas fa-plus-square text-success"></i>
               </button>
               <button class="btn" ng-click="showAdd=false">
-                <i class="fas fa-times text-danger"></i>
+                <i class="fas far fa-trash-alt text-danger"></i>
               </button>
             </td>
 
